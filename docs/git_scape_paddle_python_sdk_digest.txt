@@ -1,0 +1,972 @@
+# Repository Digest for https://github.com/PaddleHQ/paddle-python-sdk
+
+## README.md
+[![Build Status](https://img.shields.io/github/actions/workflow/status/PaddleHQ/paddle-python-sdk/publish_to_pypi.yml)](https://github.com/PaddleHQ/paddle-python-sdk/actions/?query=branch%3Amain)
+[![PyPI](https://img.shields.io/pypi/v/paddle-python-sdk.svg)](https://pypi.python.org/pypi/paddle-python-sdk)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/paddle-python-sdk.svg)](https://pypi.python.org/pypi/paddle-python-sdk/)
+[![License: Apache 2.0](https://img.shields.io/github/license/PaddleHQ/paddle-python-sdk)](http://www.apache.org/licenses/LICENSE-2.0)
+
+
+# paddle-python-sdk
+[Paddle Billing](https://www.paddle.com/billing?utm_source=dx&utm_medium=paddle-python-sdk) is a complete digital product sales and subscription management platform, designed for modern software businesses. It helps you increase your revenue, retain customers, and scale your operations.
+
+This is a [Python](https://www.python.org/) SDK that you can use to integrate Paddle Billing with applications written in Python.
+
+For working with Paddle in your frontend, use [Paddle.js](https://developer.paddle.com/paddlejs/overview?utm_source=dx&utm_medium=paddle-python-sdk). You can open checkouts, securely collect payment information, build pricing pages, and integrate with Paddle Retain.
+
+> **Important:** This package works with Paddle Billing. It does not support Paddle Classic. To work with Paddle Classic, see: [Paddle Classic API reference](https://developer.paddle.com/classic/api-reference/1384a288aca7a-api-reference?utm_source=dx&utm_medium=paddle-python-sdk)
+
+
+## Table of contents
+- [Requirements](#Requirements)
+- [Install](#Install)
+- [Usage](#Usage)
+- [Examples](#Examples)
+- [Resources](#Resources)
+
+## Requirements
+Python>=3.11 (for native type hinting, StrEnum, trailing commas, f-strings)
+
+**Project dependencies** (automatically installed by pip):
+- requests>=2.31
+- urllib3>=2.1.0
+
+
+## Install
+Because `paddle-python-sdk` is [available on PyPi](https://pypi.org/project/paddle-python-sdk/), installation is as simple as running the following `pip` command: 
+
+`pip install paddle-python-sdk`
+
+
+
+## Usage
+To authenticate, you'll need an API key. You can create and manage API keys in **Paddle > Developer tools > Authentication**.
+
+Pass your API key while initializing a new Paddle client:
+``` python
+from paddle_billing import Client
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+```
+
+You can pass your Paddle API secret key into the SDK from an environment variable:
+``` python
+from os             import getenv
+from paddle_billing import Client
+
+paddle = Client(getenv('PADDLE_API_SECRET_KEY'))
+```
+
+You can also pass an environment to work with Paddle's sandbox:
+``` python
+from paddle_billing import Client, Environment, Options
+
+paddle = Client('PADDLE_API_SECRET_KEY', options=Options(Environment.SANDBOX))
+```
+
+Keep in mind that API keys are separate for your sandbox and live accounts, so you'll need to generate keys for each environment.
+
+
+
+## Examples
+There are examples included in the [examples folder](https://github.com/PaddleHQ/paddle-python-sdk/tree/main/examples). To prevent leaking errors we recommend encapsulating Paddle operations inside Try/Except blocks. For brevity, most of the examples below do not do this.
+
+### List entities
+You can list supported entities with the `list()` method in the resource. It returns an iterator to help when working with multiple pages.
+``` python
+from paddle_billing import Client
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+
+products = paddle.products.list()
+
+# list() returns an iterable, so pagination is automatically handled
+for product in products:
+    print(f"Product's id: {product.id}")
+```
+
+### Get an entity
+You can get an entity with the `get()` method in the resource. It accepts the `id` of the entity to get. The entity is returned.
+``` python
+from paddle_billing import Client
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+
+product = paddle.products.get('PRODUCT_ID')
+```
+
+### Create an entity
+You can create a supported entity with the `create()` method in the resource. It accepts the resource's corresponding `CreateOperation` e.g. `CreateProduct`. The created entity is returned.
+
+``` python
+from paddle_billing                               import Client
+from paddle_billing.Entities.Shared.TaxCategory   import TaxCategory
+from paddle_billing.Resources.Products.Operations import CreateProduct
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+
+created_product = paddle.products.create(CreateProduct(
+    name         = 'My Product',
+    tax_category = TaxCategory.Standard,
+))
+```
+
+### Update an entity
+You can update a supported entity with the `update()` method in the resource. It accepts the `id` of the entity to update and the corresponding `UpdateOperation` e.g. `UpdateProduct`. The updated entity is returned.
+``` python
+from paddle_billing                        import Client
+from paddle_billing.Resources.Products.Operations import UpdateProduct
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+
+# Update the name of the product
+updated_product = paddle.products.update('PRODUCT_ID', UpdateProduct(
+    name = 'My Improved Product'
+))
+```
+
+Where operations require more than one `id`, the `update()` method accepts multiple arguments. For example, to update an address for a customer, pass the `customerId` and the `addressId`:
+``` python
+updated_address = paddle.addresses.update(
+    'CUSTOMER_ID',
+    'ADDRESS_ID',
+    operation_goes_here,
+)
+```
+
+### Delete an entity
+You can delete an entity with the `delete()` method in the resource. It accepts the `id` of the entity to delete. The deleted entity is returned.
+``` python
+from paddle_billing import Client
+
+paddle = Client('PADDLE_API_SECRET_KEY')
+
+deleted_product = paddle.products.delete('PRODUCT_ID')
+```
+
+
+## Resources
+
+### Webhook signature verification
+The SDK includes a helper class to verify webhook signatures sent by Notifications from Paddle.
+
+``` python
+from paddle_billing.Notifications import Secret, Verifier
+
+integrity_check = Verifier().verify(request, Secret('WEBHOOK_SECRET_KEY'))
+```
+
+The `verify()` method currently accepts any request object matching the `paddle_billing.Notifications.Requests.Request` protocol, and supports popular frameworks such as Flask and Django.
+
+Time drift max variance can be adjusted by passing `seconds` to `Verifier()` _(default: 5 seconds)_:
+
+```python
+integrity_check = Verifier(seconds).verify(request, Secret('WEBHOOK_SECRET_KEY'))
+```
+
+## Learn more
+- [Paddle API reference](https://developer.paddle.com/api-reference/overview?utm_source=dx&utm_medium=paddle-python-sdk)
+- [Sign up for Paddle Billing](https://login.paddle.com/signup?utm_source=dx&utm_medium=paddle-python-sdk)
+
+## CONTRIBUTING.md
+## Contributing
+
+If you've spotted a problem with this package or have a new feature request please [open an issue](https://github.com/PaddleHQ/paddle-python-sdk/issues) or a [submit a PR](https://github.com/PaddleHQ/paddle-python-sdk/pulls).
+
+
+## Set up dev environment
+``` bash
+git clone https://github.com/PaddleHQ/paddle-python-sdk && \
+cd paddle-python-sdk && \
+pip install .[dev]
+```
+
+### Pre-commit hooks
+
+After installing dev dependencies, install pre-commit hooks to run codestyle requirements:
+```bash
+pre-commit install
+```
+
+## Run tests
+Python `pytest` tests can be run either by changing into the `paddle-python-sdk`, activating the `venv`, and running `pytest`, or by running `pytest` directly
+``` bash
+cd paddle-python-sdk && .venv/bin/pytest
+```
+``` bash
+cd paddle-python-sdk && \
+source .venv/bin/activate && \
+pytest
+```
+
+You can run specific tests by passing a parameter to `pytest`. For example, you can run all tests within a directory:
+``` bash
+pytest tests/Unit
+```
+Or you can run an individual test within a file:
+``` bash
+pytest tests/Unit/Notification/test_Verifier.py::TestVerifier::test_validate_paddle_signature_header_integrity
+```
+
+#### Use the command `deactivate` to exit the `venv`.
+
+
+## Codestyle
+
+This project uses [flake8](https://github.com/PyCQA/flake8) to enforce codestyle requirements.
+
+To format code run:
+```bash
+black .
+```
+
+## SECURITY.md
+- [Security Policy](#security-policy)
+  - [Reporting a Vulnerability](#reporting-a-vulnerability)
+
+# Security policy
+
+## Reporting a vulnerability
+
+Please see the [Paddle Vulnerability Disclosure Policy](https://www.paddle.com/vulnerability-disclosure-policy) and
+report any vulnerabilities using https://vdp.paddle.com/p/Report-a-Vulnerability.
+
+> [!WARNING]
+> Do not create issues for potential security vulnerabilities. Issues are public and can be seen by potentially malicious actors.
+
+Thanks for helping to make the Paddle platform safe for everyone.
+
+## LICENSE
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   Copyright 2024 Paddle.com Market Limited
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+## .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: python
+        types: [python]
+        args: ["--check"]
+  - repo: local
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: flake8
+        language: python
+        types: [python]
+
+## CHANGELOG.md
+# Paddle Python SDK Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Check our main [developer changelog](https://developer.paddle.com/?utm_source=dx&utm_medium=paddle-python-sdk) for information about changes to the Paddle Billing platform, the Paddle API, and other developer tools.
+
+## 1.6.1 - 2025-06-10
+
+### Fixed
+- Fixed JSON encoding of undefined notification entities
+  - `paddle_billing.Notifications.Entities.UndefinedEntity` now implements `to_json` and can be encoded using `paddle_billing.Json.PayloadEncoder`
+- Improved type hints throughout SDK
+
+## 1.6.0 - 2025-02-10
+
+### Added
+
+- Added `PreviewTransaction` operation to support transaction previews without location information.
+
+### Fixed
+
+- Transaction preview `currency_code` can now be set to `null`.
+
+## 1.5.0 - 2025-01-28
+
+### Added
+
+- Added `transactions.revise` operation to revise a transaction and added `revised_at` to `Transaction` entity, see [related changelog](https://developer.paddle.com/changelog/2024/revise-transaction-customer-information?utm_source=dx&utm_medium=paddle-python-sdk).
+- Added support for `transaction.revised` notification, see [related changelog](https://developer.paddle.com/changelog/2024/revise-transaction-customer-information?utm_source=dx&utm_medium=paddle-python-sdk).
+- Added simulation API support [related changelog](https://developer.paddle.com/changelog/2024/webhook-simulator?utm_source=dx&utm_medium=paddle-python-sdk)
+  - `Client.simulations.create`
+  - `Client.simulations.update`
+  - `Client.simulations.get`
+  - `Client.simulations.list`
+  - `Client.simulation_runs.create`
+  - `Client.simulation_runs.get`
+  - `Client.simulation_runs.list`
+  - `Client.simulation_run_events.replay`
+  - `Client.simulation_run_events.get`
+  - `Client.simulation_run_events.list`
+  - `Client.simulation_types.list`
+
+## 1.4.0 - 2024-12-19
+
+### Added
+
+- Added `on_resume` support to subscription resume and pause operations
+
+## 1.3.1 - 2024-12-17
+
+### Fixed
+
+- Adjustment type in responses is now the correct type
+
+## 1.3.0 - 2024-12-17
+
+### Added
+
+- Support for adjustment type, see [related changelog](https://developer.paddle.com/changelog/2024/refund-credit-full-total?utm_source=dx&utm_medium=paddle-python-sdk)
+- Added Vietnamese Dong (`VND`) as a supported currency for payments [related changelog](https://developer.paddle.com/changelog/2024/vietnamese-dong-vnd-supported-currency?utm_source=dx&utm_medium=paddle-python-sdk)
+
+## 1.2.2 - 2024-12-17
+
+### Fixed
+
+- Subscription discount now supports null `starts_at`
+
+## 1.2.1 - 2024-12-04
+
+### Fixed
+
+- Subscription IDs can be omitted when creating customer portal sessions
+- Customer portal session customer ID will always be returned as string
+- `Client.notifications.replay` now calls correct endpoint
+
+## 1.2.0 - 2024-12-03
+
+### Added
+
+- Support for customer portal sessions, see [related changelog](https://developer.paddle.com/changelog/2024/customer-portal-sessions?utm_source=dx&utm_medium=paddle-python-sdk)
+  - `Client.customer_portal_sessions.create`
+
+## 1.1.2 - 2024-11-20
+
+### Fixed
+- `paddle_billing.Notifications.Entities.Subscription` and `paddle_billing.Notifications.Entities.SubscriptionCreated` `current_billing_period` would return `None` if `billing_details` was `None`. `current_billing_period` will now return `TimePeriod` when set.
+
+### Added
+
+- Added missing `traffic_source` property to `paddle_billing.Entities.NotificationSetting` entity
+
+## 1.1.1 - 2024-11-14
+
+### Fixed
+
+- `paddle_billing.Entities.PaymentMethod` `type` property is required
+
+## 1.1.0 - 2024-11-14
+
+### Added
+
+- Support for saved payment methods, see [related changelog](https://developer.paddle.com/changelog/2024/saved-payment-methods?utm_source=dx&utm_medium=paddle-python-sdk)
+  - `Client.payment_methods.list`
+  - `Client.payment_methods.get`
+  - `Client.payment_methods.delete`
+  - `Client.customers.create_auth_token`
+
+## 1.0.0 - 2024-11-11
+
+### Changed
+
+- `paddle_billing.Resources.Discounts.Operations.CreateDiscount` `expires_at` is now `paddle_billing.Entities.DateTime`
+- `paddle_billing.Resources.Discounts.Operations.UpdateDiscount` `expires_at` is now `paddle_billing.Entities.DateTime`
+- Transaction and Subscription operation items now allow optional properties to be omitted.
+  - The following property types have changed (See UPGRADING.md for further details)
+    - `paddle_billing.Resources.Subscriptions.Operations`:
+      - `UpdateSubscription.items`
+      - `PreviewUpdateSubscription.items`
+      - `CreateOneTimeCharge.items`
+      - `PreviewOneTimeCharge.items`
+    - `paddle_billing.Resources.Transactions.Operations`:
+      - `CreateTransaction.items`
+      - `UpdateTransaction.items`
+      - `PreviewTransactionByAddress.items`
+      - `PreviewTransactionByCustomer.items`
+      - `PreviewTransactionByIP.items`
+- Transaction and Subscription preview responses now support preview products and prices without IDs (see UPGRADING.md for further details)
+
+### Removed
+- `get_parameters()` method on request operation classes is now removed or replaced by `to_json()` (see UPGRADING.md for further details)
+
+## 0.3.2 - 2024-11-07
+
+### Fixed
+
+- `paddle_billing.Entities.Shared.TransactionLineItemPreview` `proration` can now be None
+
+## 0.3.1 - 2024-10-14
+
+### Fixed
+
+- Added missing initialization file for `paddle_billing.Resources.IPAddresses`
+
+## 0.3.0 - 2024-10-09
+
+### Added
+
+- Added `product` to `subscription.items[]`, see [related changelog](https://developer.paddle.com/changelog/2024/subscription-items-product?utm_source=dx&utm_medium=paddle-python-sdk)
+- Support custom prices when updating and previewing subscriptions, see [related changelog](https://developer.paddle.com/changelog/2024/add-custom-items-subscription)
+- Support for `custom_data` on discounts
+- Support notification settings pagination, see [related changelog](https://developer.paddle.com/changelog/2024/notification-settings-pagination)
+- Support notification settings `active` filter
+- `TransactionsClient.get_invoice_pdf` now supports `disposition` parameter, see [related changelog](https://developer.paddle.com/changelog/2024/invoice-pdf-open-in-browser)
+- `SubscriptionClient` `preview_update` and `preview_one_time_charge` responses now have `import_meta` property
+- Support for `tax_rates_used` on Adjustments
+- Added `IPAddressesClient.get_ip_addresses` to support retrieval of Paddle IP addresses
+- Support for `proration` on subscription `recurring_transaction_details.line_items[]` and `next_transaction.details.line_items[]`
+- Added `AdjustmentsClient.get_credit_note`, see [related changelog](https://developer.paddle.com/changelog/2024/generate-adjustments-credit-notes)
+
+### Changed
+
+- `paddle_billing.Entities.Shared.CustomData` is no longer a `dataclass`
+- `NotificationSettingsClient.delete` now returns `None` for `204 No Content` response
+- `TimePeriod` is now aligned to API specification:
+  - Existing shared `TimePeriod` was renamed to `Duration` (with properties `interval` and `frequency`)
+  - New shared `TimePeriod` was added (with properties `starts_at` and `ends_at`)
+- Replaced `AdjustmentTimePeriod`, `SubscriptionTimePeriod` and `TransactionTimePeriod` with shared `TimePeriod`
+- Replaced `AdjustmentProration`, `SubscriptionProration` and `TransactionProration` with shared `Proration`
+- `paddle_billing.Entities.Event` `data` will now be `paddle_billing.Notifications.Entities.SubscriptionCreated` for `subscription.created` events
+- `paddle_billing.Entities.Event` `data` will now be `paddle_billing.Notifications.Entities.UndefinedEntity` for unknown event types
+- `paddle_billing.Resources.Reports.Operations.CreateReport` is replaced by report specific operations `CreateAdjustmentsReport` | `CreateDiscountsReport` | `CreateProductsAndPricesReport` | `CreateTransactionsReport`
+- `paddle_billing.Entities.Notification` `payload` is now `paddle_billing.Entities.Notifications.NotificationEvent`
+- `paddle_billing.Entities.Shared.BillingDetails` is no longer used for `billing_details` in request operations
+  - `CreateTransaction` now uses `paddle_billing.Resources.Transactions.Operations.Create.CreateBillingDetails`
+  - `UpdateTransaction` now uses `paddle_billing.Resources.Transactions.Operations.Update.UpdateBillingDetails`
+  - `UpdateSubscription` | `PreviewUpdateSubscription` now uses `paddle_billing.Resources.Subscriptions.Operations.Update.UpdateBillingDetails`
+
+### Fixed
+
+- `PreviewPrice` operation no longer allows empty `items`
+- `CustomersClient.credit_balances` can now be filtered by `currency_code`
+- Transaction payments `payment_method_id` can be `string` or `None`
+- `paddle_billing.Notifications.Verifier` `verify()` now expects `request` to be `paddle_billing.Notifications.Requests.Request` protocol
+- Client connection errors will be raised as `requests.exceptions.ConnectionError` instead of an `AttributeError`
+
+### Removed
+
+- `AvailablePaymentMethods` - replaced by `PaymentMethodType`
+- Removed `receipt_data` from `CreateOneTimeCharge` and `PreviewOneTimeCharge` subscription operations
+- Removed `receipt_data` from `Transaction`
+- Removed `paddle_billing.Resources.Transactions.Operations.PreviewTransaction` - replaced by `PreviewTransactionByAddress` | `PreviewTransactionByCustomer` | `PreviewTransactionByIP`
+
+## 0.2.2 - 2024-09-03
+
+### Fixed
+
+- Fixed [bug](https://github.com/PaddleHQ/paddle-python-sdk/pull/24) - set default timeout.
+
+## 0.2.1 - 2024-08-19
+
+### Fixed
+
+- Fix `setup.py` version
+
+## 0.2.0 - 2024-08-05
+
+### Changed
+
+- `PaddleStrEnum` has been re-implement to gracefully handle non-existent values, it is no longer using native enums
+- The `paddle_billing.Entities.Subscriptions.SubscriptionItem` price entity is now using the main `paddle_billing.Entities.Price` entity
+- Updated the version of `pytest` supported to accept 8.4.0
+
+### Added
+
+- The `paddle_billing.Notifications.Entities.Subscriptions.SubscriptionPrice` entity has been updated to include support for all `Price` properties
+- Improved IDE support for Collections, IDEs will now know the variable type when iterating through the collection
+
+### Fixed
+
+- Entity factory methods are consistently static now where previously there were implementations as class methods 
+
+### Removed
+
+- The `paddle_billing.Entities.Subscriptions.SubscriptionPrice` entity which has been removed in favour of reusing `paddle_billing.Entities.Price` entity.
+
+
+## 0.1.3 - 2024-06-20
+
+### Fixed
+
+- Fixed [bug](https://github.com/PaddleHQ/paddle-python-sdk/issues/10) - raise Paddle API errors
+
+
+## 0.1.2 - 2024-06-20
+
+### Fixed
+
+- Fixed [bug](https://github.com/PaddleHQ/paddle-python-sdk/pull/12) - corrected import in `NotificationSettingCollection`.
+
+---
+
+## 0.1.1 - 2024-05-24
+
+### Fixed
+
+- Fixed a [bug](https://github.com/PaddleHQ/paddle-python-sdk/issues/7) with `UpdateBusiness` operation.
+
+---
+
+## 0.1.0 - 2024-04-05
+
+### Added:
+
+- Initial release.
+
+## UPGRADING.md
+# Upgrading
+
+All breaking changes prior to v1 will be documented in this file to assist with upgrading.
+
+## v1.0.0
+
+### 1. Unused `get_parameters()` method was removed from request operation classes
+
+`get_parameters()` methods returned the data used for operation request payloads, but is now removed or replaced by `to_json()`. This method was intended to be internal, so should not require any changes.
+
+`get_parameters()` method was removed from the following classes:
+  - `paddle_billing.Entities.Reports.ReportFilter`
+  - `paddle_billing.Entities.Shared.CustomData`
+  - `paddle_billing.Entities.Subscriptions.SubscriptionItems`
+  - `paddle_billing.Entities.Subscriptions.SubscriptionItemsWithPrice`
+  - `paddle_billing.Notifications.Entities.Reports.ReportFilter`
+  - `paddle_billing.Notifications.Entities.Shared.CustomData`
+  - `paddle_billing.Resources.Addresses.Operations.CreateAddress`
+  - `paddle_billing.Resources.Addresses.Operations.UpdateAddress`
+  - `paddle_billing.Resources.Adjustments.Operations.CreateAdjustment`
+  - `paddle_billing.Resources.Businesses.Operations.CreateBusiness`
+  - `paddle_billing.Resources.Businesses.Operations.UpdateBusiness`
+  - `paddle_billing.Resources.Customers.Operations.CreateCustomer`
+  - `paddle_billing.Resources.Customers.Operations.UpdateCustomer`
+  - `paddle_billing.Resources.Discounts.Operations.CreateDiscount`
+  - `paddle_billing.Resources.Discounts.Operations.UpdateDiscount`
+  - `paddle_billing.Resources.NotificationSettings.Operations.CreateNotificationSetting`
+  - `paddle_billing.Resources.NotificationSettings.Operations.UpdateNotificationSetting`
+  - `paddle_billing.Resources.Prices.Operations.CreatePrice`
+  - `paddle_billing.Resources.Prices.Operations.UpdatePrice`
+  - `paddle_billing.Resources.PricingPreviews.Operations.PreviewPrice`
+  - `paddle_billing.Resources.Products.Operations.CreateProduct`
+  - `paddle_billing.Resources.Products.Operations.UpdateProduct`
+  - `paddle_billing.Resources.Reports.Operations.CreateReport` subclasses:
+    - `paddle_billing.Resources.Reports.Operations.CreateAdjustmentsReport`
+    - `paddle_billing.Resources.Reports.Operations.CreateDiscountsReport`
+    - `paddle_billing.Resources.Reports.Operations.CreateProductsAndPricesReport`
+    - `paddle_billing.Resources.Reports.Operations.CreateTransactionsReport`
+  - `paddle_billing.Resources.Reports.Operations.Filters.Filter` subclasses:
+    - `paddle_billing.Resources.Reports.Operations.Filters.AdjustmentActionFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.AdjustmentStatusFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.CollectionModeFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.CurrencyCodeFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.DiscountStatusFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.DiscountTypeFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.Filter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.PriceStatusFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.PriceTypeFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.PriceUpdatedAtFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.ProductStatusFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.ProductTypeFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.ProductUpdatedAtFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.TransactionOriginFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.TransactionStatusFilter`
+    - `paddle_billing.Resources.Reports.Operations.Filters.UpdatedAtFilter`
+  - `paddle_billing.Resources.Subscriptions.Operations.CancelSubscription`
+  - `paddle_billing.Resources.Subscriptions.Operations.CreateOneTimeCharge`
+  - `paddle_billing.Resources.Subscriptions.Operations.PauseSubscription`
+  - `paddle_billing.Resources.Subscriptions.Operations.PreviewOneTimeCharge`
+  - `paddle_billing.Resources.Subscriptions.Operations.ResumeSubscription`
+  - `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByAddress`
+  - `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByCustomer`
+  - `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByIP`
+
+### 2. Transaction and Subscription operation items now allow optional properties to be omitted.
+
+Transaction and Subscription operation item types have changed to new types that allow optional properties to be omitted.
+
+- `paddle_billing.Resources.Subscriptions.Operations` `UpdateSubscription` and `PreviewUpdateSubscription` `items` are now list of:
+  - `paddle_billing.Resources.Subscriptions.Operations.Update.SubscriptionUpdateItem`
+  - `paddle_billing.Resources.Subscriptions.Operations.Update.SubscriptionUpdateItemWithPrice`
+- `paddle_billing.Resources.Subscriptions.Operations` `CreateOneTimeCharge` and `PreviewOneTimeCharge` `items` are now list of:
+  - `paddle_billing.Resources.Subscriptions.Operations.Charge.SubscriptionChargeItem`
+  - `paddle_billing.Resources.Subscriptions.Operations.Charge.SubscriptionChargeItemWithPrice`
+- `paddle_billing.Resources.Transactions.Operations.CreateTransaction.items` is now list of:
+  - `paddle_billing.Resources.Transactions.Operations.Create.TransactionCreateItem`
+  - `paddle_billing.Resources.Transactions.Operations.Create.TransactionCreateItemWithPrice`
+- `paddle_billing.Resources.Transactions.Operations.UpdateTransaction.items` is now list of:
+  - `paddle_billing.Resources.Transactions.Operations.Update.TransactionUpdateItem`
+  - `paddle_billing.Resources.Transactions.Operations.Update.TransactionUpdateItemWithPrice`
+- `paddle_billing.Resources.Transactions.Operations` `PreviewTransactionByAddress`, `PreviewTransactionByCustomer` and `PreviewTransactionByIP` `items` are now list of:
+  - `paddle_billing.Resources.Transactions.Operations.Preview.TransactionItemPreviewWithNonCatalogPrice`
+  - `paddle_billing.Resources.Transactions.Operations.Preview.TransactionItemPreviewWithPriceId`
+
+
+The following classes have been removed:
+- `paddle_billing.Entities.Subscriptions`:
+  - `SubscriptionItems`
+    - replaced by `paddle_billing.Resources.Subscriptions.Operations.Update.SubscriptionUpdateItem`
+  - `SubscriptionItemsWithPrice`
+    - replaced by `paddle_billing.Resources.Subscriptions.Operations.Update.SubscriptionUpdateItemWithPrice`
+  - `SubscriptionNonCatalogPrice`
+    - replaced by `paddle_billing.Resources.Subscriptions.Operations.Price.SubscriptionNonCatalogPrice`
+  - `SubscriptionNonCatalogPriceWithProduct`
+    - replaced by `paddle_billing.Resources.Subscriptions.Operations.Price.SubscriptionNonCatalogPriceWithProduct`
+  - `SubscriptionNonCatalogProduct`
+    - replaced by `paddle_billing.Resources.Subscriptions.Operations.Price.SubscriptionNonCatalogProduct`
+- `paddle_billing.Entities.Transactions`:
+  - `TransactionCreateItem`
+    - replaced by:
+      - `paddle_billing.Resources.Transactions.Operations.Create.TransactionCreateItem` (for create)
+      - `paddle_billing.Resources.Transactions.Operations.Update.TransactionUpdateItem` (for update)
+  - `TransactionCreateItemWithPrice`
+    - replaced by:
+      - `paddle_billing.Resources.Transactions.Operations.Create.TransactionCreateItemWithPrice` (for create)
+      - `paddle_billing.Resources.Transactions.Operations.Update.TransactionUpdateItemWithPrice` (for update)
+  - `TransactionNonCatalogPrice`
+    - replaced by `paddle_billing.Resources.Transactions.Operations.Price.TransactionNonCatalogPrice`
+  - `TransactionNonCatalogPriceWithProduct`
+    - replaced by `paddle_billing.Resources.Transactions.Operations.Price.TransactionNonCatalogPriceWithProduct`
+  - `TransactionNonCatalogProduct`
+    - replaced by `paddle_billing.Resources.Transactions.Operations.Price.TransactionNonCatalogProduct`
+  - `TransactionItemPreviewWithNonCatalogPrice`
+    - replaced by `paddle_billing.Resources.Transactions.Operations.Preview.TransactionItemPreviewWithNonCatalogPrice`
+  - `TransactionItemPreviewWithPriceId`
+    - replaced by `paddle_billing.Resources.Transactions.Operations.Preview.TransactionItemPreviewWithPriceId`
+
+### 3. Transaction and Subscription preview responses now support preview products and prices without IDs
+
+- `SubscriptionPreview.immediate_transaction.details.line_items[].price_id` can now be `None`
+- `SubscriptionPreview.immediate_transaction.details.line_items[].product` is now `paddle_billing.Entities.Shared.TransactionPreviewProduct`
+- `SubscriptionPreview.next_transaction.details.line_items[].price_id` can now be `None`
+- `SubscriptionPreview.next_transaction.details.line_items[].product` is now `paddle_billing.Entities.Shared.TransactionPreviewProduct`
+- `SubscriptionPreview.recurring_transaction_details.line_items[].price_id` can now be `None`
+- `SubscriptionPreview.recurring_transaction_details.line_items[].product` is now `paddle_billing.Entities.Shared.TransactionPreviewProduct`
+- `TransactionPreview.items[].price` is now `TransactionPreviewPrice`
+- `TransactionPreview.details.line_items[].price_id` can now be `None`
+- `TransactionPreview.details.line_items[].product` is now `paddle_billing.Entities.Shared.TransactionPreviewProduct`
+
+## v0.3.0
+
+### 1. `AvailablePaymentMethods` has been replaced by `PaymentMethodType`.
+
+`Transaction` `available_payment_methods` will now return a list of `paddle_billing.Entities.Shared.PaymentMethodType`.
+
+All usage of `paddle_billing.Entities.Shared.AvailablePaymentMethods` will need to be replaced with `paddle_billing.Entities.Shared.PaymentMethodType`.
+
+### 2. `TimePeriod` has been aligned to API specification
+
+Existing shared `TimePeriod` was renamed to `Duration` (with properties `interval` and `frequency`), and new `TimePeriod` was added (with properties `starts_at` and `ends_at`).
+
+Existing usages of `paddle_billing.Entities.Shared.TimePeriod` will need to be changed to `paddle_billing.Entities.Shared.Duration`.
+
+`paddle_billing.Entities.Shared.TimePeriod` should be used in place of:
+- `paddle_billing.Entities.Shared.AdjustmentTimePeriod`
+- `paddle_billing.Entities.Subscriptions.SubscriptionTimePeriod`
+- `paddle_billing.Entities.Transactions.TransactionTimePeriod`
+
+`paddle_billing.Notifications.Entities.Shared.TimePeriod` should be used in place of:
+- `paddle_billing.Notifications.Entities.Shared.AdjustmentTimePeriod`
+- `paddle_billing.Notifications.Entities.Subscriptions.SubscriptionTimePeriod`
+- `paddle_billing.Notifications.Entities.Transactions.TransactionTimePeriod`
+
+`paddle_billing.Entities.Shared.Proration` should be used in place of:
+- `paddle_billing.Entities.Shared.AdjustmentProration`
+- `paddle_billing.Entities.Subscriptions.SubscriptionProration`
+- `paddle_billing.Entities.Transactions.TransactionProration`
+
+`paddle_billing.Notifications.Entities.Shared.Proration` should be used in place of:
+- `paddle_billing.Notifications.Entities.Shared.AdjustmentProration`
+- `paddle_billing.Notifications.Entities.Transactions.TransactionProration`
+
+### 3. Transaction preview operation `PreviewTransaction` is removed
+
+Usage of `paddle_billing.Resources.Transactions.Operations.PreviewTransaction` should be replaced with one of:
+- `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByAddress`
+- `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByCustomer`
+- `paddle_billing.Resources.Transactions.Operations.PreviewTransactionByIP`
+
+### 4. `CreateReport` operation is replaced by report specific operations `CreateAdjustmentsReport` | `CreateDiscountsReport` | `CreateProductsAndPricesReport` | `CreateTransactionsReport`
+
+Usage of `paddle_billing.Resources.Reports.Operations.CreateReport` should be replaced with one of:
+- `paddle_billing.Resources.Reports.Operations.CreateAdjustmentsReport`
+- `paddle_billing.Resources.Reports.Operations.CreateDiscountsReport`
+- `paddle_billing.Resources.Reports.Operations.CreateProductsAndPricesReport`
+- `paddle_billing.Resources.Reports.Operations.CreateTransactionsReport`
+
+### 5. `BillingDetails` entity is no longer used for `billing_details` in request operations
+
+Usage of `paddle_billing.Entities.Shared.BillingDetails` for `billing_details` in request operations, should be replaced with:
+- `paddle_billing.Resources.Transactions.Operations.Create.CreateBillingDetails` for `CreateTransaction`
+- `paddle_billing.Resources.Transactions.Operations.Update.UpdateBillingDetails` for `UpdateTransaction`
+- `paddle_billing.Resources.Subscriptions.Operations.Update.UpdateBillingDetails` for `UpdateSubscription` | `PreviewUpdateSubscription`
+
+## v0.2.0
+
+This release includes a few breaking changes. These changes should be limited impact on most integrations but may cause problems in some circumstances. 
+
+### 1. `PaddleStrEnum` has been re-implement to gracefully handle non-existent values, it is no longer using native enums
+
+This should not require any implementation changes in your code. The new `PaddleStrEnum` is implemented in a way that minimises this impact.
+
+However, as we have dropped native Enums there maybe native Enum specific behaviour that does not work exactly as before which would require more caution.
+
+### 2. The `paddle_billing.Entities.Subscriptions.SubscriptionItem` price entity is now using the main `paddle_billing.Entities.Price` entity
+
+The change here has again limited impact on runtime behaviour except for having more properties available, however, any instance or type checking at runtime or statically will fail.
+
+As the `paddle_billing.Entities.Subscriptions.SubscriptionPrice` entity has been removed any references of this in the code will fail.
+
+If you're making any of these checks or have the `SubscriptionPrice` imported you will need to update accordingly.
+
+### 3. Entity factory methods are consistently static now where previously there were implementations as class methods
+
+This should not require any real change with integrations as these factory methods never made use of being class methods but something to be aware of.
+
+## pyproject.toml
+[tool.black]
+line-length = 120
+
+## pyrightconfig.json
+{
+  "typeCheckingMode": "basic",
+  "reportMissingTypeArgument": true,
+  "reportAssignmentType": false,
+  "reportAttributeAccessIssue": false,
+  "reportOperatorIssue": false,
+  "reportOptionalMemberAccess": false,
+  "reportOptionalSubscript": false,
+  "reportCallIssue": false,
+  "reportReturnType": false,
+  "reportOptionalIterable": false
+}
+## setup.py
+from setuptools import setup, find_packages
+
+
+setup(
+    version="1.6.1",
+    author="Paddle and contributors",
+    author_email="team-dx@paddle.com",
+    description="Paddle's Python SDK for Paddle Billing",
+    keywords=["paddle", "sdk", "python"],
+    license="Apache-2.0",
+    name="paddle-python-sdk",
+    packages=find_packages(),
+    python_requires=">=3.11",
+    url="https://developer.paddle.com/api-reference/overview",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    classifiers=[
+        # Full list: https://pypi.org/classifiers/
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+    ],
+    extras_require={
+        "dev": [
+            "pytest>=7.4.4,<8.4.0",
+            "pytest-cov~=4.1.0",
+            "requests-mock~=1.11.0",
+            "setuptools>=69.0.3",
+            "pre-commit>=3.8.0",
+            "black>=24.8.0",
+            "flake8>=7.1.1",
+        ],
+    },
+    install_requires=[
+        "requests>=2.31",
+        "urllib3>=1.26.18",
+    ],
+)

@@ -1,0 +1,1129 @@
+# Repository Digest for https://github.com/google/adk-python
+
+## README.md
+# Agent Development Kit (ADK)
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python Unit Tests](https://github.com/google/adk-python/actions/workflows/python-unit-tests.yml/badge.svg)](https://github.com/google/adk-python/actions/workflows/python-unit-tests.yml)
+[![r/agentdevelopmentkit](https://img.shields.io/badge/Reddit-r%2Fagentdevelopmentkit-FF4500?style=flat&logo=reddit&logoColor=white)](https://www.reddit.com/r/agentdevelopmentkit/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/google/adk-python)
+
+<html>
+    <h2 align="center">
+      <img src="https://raw.githubusercontent.com/google/adk-python/main/assets/agent-development-kit.png" width="256"/>
+    </h2>
+    <h3 align="center">
+      An open-source, code-first Python toolkit for building, evaluating, and deploying sophisticated AI agents with flexibility and control.
+    </h3>
+    <h3 align="center">
+      Important Links:
+      <a href="https://google.github.io/adk-docs/">Docs</a>, 
+      <a href="https://github.com/google/adk-samples">Samples</a>,
+      <a href="https://github.com/google/adk-java">Java ADK</a> &
+      <a href="https://github.com/google/adk-web">ADK Web</a>.
+    </h3>
+</html>
+
+Agent Development Kit (ADK) is a flexible and modular framework for developing and deploying AI agents. While optimized for Gemini and the Google ecosystem, ADK is model-agnostic, deployment-agnostic, and is built for compatibility with other frameworks. ADK was designed to make agent development feel more like software development, to make it easier for developers to create, deploy, and orchestrate agentic architectures that range from simple tasks to complex workflows.
+
+
+---
+
+## ✨ Key Features
+
+- **Rich Tool Ecosystem**: Utilize pre-built tools, custom functions,
+  OpenAPI specs, or integrate existing tools to give agents diverse
+  capabilities, all for tight integration with the Google ecosystem.
+
+- **Code-First Development**: Define agent logic, tools, and orchestration
+  directly in Python for ultimate flexibility, testability, and versioning.
+
+- **Modular Multi-Agent Systems**: Design scalable applications by composing
+  multiple specialized agents into flexible hierarchies.
+
+- **Deploy Anywhere**: Easily containerize and deploy agents on Cloud Run or
+  scale seamlessly with Vertex AI Agent Engine.
+
+## 🤖 Agent2Agent (A2A) Protocol and ADK Integration
+
+For remote agent-to-agent communication, ADK integrates with the
+[A2A protocol](https://github.com/google-a2a/A2A/).
+See this [example](https://github.com/google-a2a/a2a-samples/tree/main/samples/python/agents/google_adk)
+for how they can work together.
+
+## 🚀 Installation
+
+### Stable Release (Recommended)
+
+You can install the latest stable version of ADK using `pip`:
+
+```bash
+pip install google-adk
+```
+
+The release cadence is weekly.
+
+This version is recommended for most users as it represents the most recent official release.
+
+### Development Version
+Bug fixes and new features are merged into the main branch on GitHub first. If you need access to changes that haven't been included in an official PyPI release yet, you can install directly from the main branch:
+
+```bash
+pip install git+https://github.com/google/adk-python.git@main
+```
+
+Note: The development version is built directly from the latest code commits. While it includes the newest fixes and features, it may also contain experimental changes or bugs not present in the stable release. Use it primarily for testing upcoming changes or accessing critical fixes before they are officially released.
+
+## 📚 Documentation
+
+Explore the full documentation for detailed guides on building, evaluating, and
+deploying agents:
+
+* **[Documentation](https://google.github.io/adk-docs)**
+
+## 🏁 Feature Highlight
+
+### Define a single agent:
+
+```python
+from google.adk.agents import Agent
+from google.adk.tools import google_search
+
+root_agent = Agent(
+    name="search_assistant",
+    model="gemini-2.0-flash", # Or your preferred Gemini model
+    instruction="You are a helpful assistant. Answer user questions using Google Search when needed.",
+    description="An assistant that can search the web.",
+    tools=[google_search]
+)
+```
+
+### Define a multi-agent system:
+
+Define a multi-agent system with coordinator agent, greeter agent, and task execution agent. Then ADK engine and the model will guide the agents works together to accomplish the task.
+
+```python
+from google.adk.agents import LlmAgent, BaseAgent
+
+# Define individual agents
+greeter = LlmAgent(name="greeter", model="gemini-2.0-flash", ...)
+task_executor = LlmAgent(name="task_executor", model="gemini-2.0-flash", ...)
+
+# Create parent agent and assign children via sub_agents
+coordinator = LlmAgent(
+    name="Coordinator",
+    model="gemini-2.0-flash",
+    description="I coordinate greetings and tasks.",
+    sub_agents=[ # Assign sub_agents here
+        greeter,
+        task_executor
+    ]
+)
+```
+
+### Development UI
+
+A built-in development UI to help you test, evaluate, debug, and showcase your agent(s).
+
+<img src="https://raw.githubusercontent.com/google/adk-python/main/assets/adk-web-dev-ui-function-call.png"/>
+
+###  Evaluate Agents
+
+```bash
+adk eval \
+    samples_for_testing/hello_world \
+    samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json
+```
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether it's bug reports, feature requests, documentation improvements, or code contributions, please see our
+- [General contribution guideline and flow](https://google.github.io/adk-docs/contributing-guide/#questions).
+- Then if you want to contribute code, please read [Code Contributing Guidelines](./CONTRIBUTING.md) to get started.
+
+## 📄 License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*Happy Agent Building!*
+
+## CONTRIBUTING.md
+# How to contribute
+
+We'd love to accept your patches and contributions to this project.
+
+- [How to contribute](#how-to-contribute)
+- [Before you begin](#before-you-begin)
+  - [Sign our Contributor License Agreement](#sign-our-contributor-license-agreement)
+  - [Review our community guidelines](#review-our-community-guidelines)
+- [Contribution workflow](#contribution-workflow)
+  - [Finding Issues to Work On](#finding-issues-to-work-on)
+  - [Requirement for PRs](#requirement-for-prs)
+  - [Large or Complex Changes](#large-or-complex-changes)
+  - [Testing Requirements](#testing-requirements)
+    - [Unit Tests](#unit-tests)
+    - [Manual End-to-End (E2E) Tests](#manual-end-to-end-e2e-tests)
+  - [Documentation](#documentation)
+  - [Development Setup](#development-setup)
+  - [Code reviews](#code-reviews)
+
+
+# Before you begin
+
+## Sign our Contributor License Agreement
+
+Contributions to this project must be accompanied by a
+[Contributor License Agreement](https://cla.developers.google.com/about) (CLA).
+You (or your employer) retain the copyright to your contribution; this simply
+gives us permission to use and redistribute your contributions as part of the
+project.
+
+If you or your current employer have already signed the Google CLA (even if it
+was for a different project), you probably don't need to do it again.
+
+Visit <https://cla.developers.google.com/> to see your current agreements or to
+sign a new one.
+
+## Review our community guidelines
+
+This project follows
+[Google's Open Source Community Guidelines](https://opensource.google/conduct/).
+
+# Contribution workflow
+
+## Finding Issues to Work On
+
+- Browse issues labeled **`good first issue`** (newcomer-friendly) or **`help wanted`** (general contributions).
+- For other issues, please kindly ask before contributing to avoid duplication.
+
+
+## Requirement for PRs
+
+- All PRs, other than small documentation or typo fixes, should have a Issue assoicated. If not, please create one.
+- Small, focused PRs. Keep changes minimal—one concern per PR.
+- For bug fixes or features, please provide logs or screenshot after the fix is applied to help reviewers better understand the fix.
+- Please include a `testing plan` section in your PR to talk about how you will test. This will save time for PR review. See `Testing Requirements` section for more details.
+
+## Large or Complex Changes
+For substantial features or architectural revisions:
+
+- Open an Issue First: Outline your proposal, including design considerations and impact.
+- Gather Feedback: Discuss with maintainers and the community to ensure alignment and avoid duplicate work
+
+## Testing Requirements
+
+To maintain code quality and prevent regressions, all code changes must include comprehensive tests and verifiable end-to-end (E2E) evidence.
+
+
+### Unit Tests
+
+Please add or update unit tests for your change. Please include a summary of passed `pytest` results.
+
+Requirements for unit tests:
+
+- **Coverage:** Cover new features, edge cases, error conditions, and typical use cases.
+- **Location:** Add or update tests under `tests/unittests/`, following existing naming conventions (e.g., `test_<module>_<feature>.py`).
+- **Framework:** Use `pytest`. Tests should be:
+  - Fast and isolated.
+  - Written clearly with descriptive names.
+  - Free of external dependencies (use mocks or fixtures as needed).
+- **Quality:** Aim for high readability and maintainability; include docstrings or comments for complex scenarios.
+
+### Manual End-to-End (E2E) Tests
+
+Manual E2E tests ensure integrated flows work as intended. Your tests should cover all scenarios. Sometimes, it's also good to ensure relevant functionality is not impacted.
+
+Depending on your change:
+
+- **ADK Web:**
+  - Use the `adk web` to verify functionality.
+  - Capture and attach relevant screenshots demonstrating the UI/UX changes or outputs.
+  - Label screenshots clearly in your PR description.
+
+- **Runner:**
+  - Provide the testing setup. For example, the agent definition, and the runner setup.
+  - Execute the `runner` tool to reproduce workflows.
+  - Include the command used and console output showing test results.
+  - Highlight sections of the log that directly relate to your change.
+
+## Documentation
+
+For any changes that impact user-facing documentation (guides, API reference, tutorials), please open a PR in the [adk-docs](https://github.com/google/adk-docs) repository to update relevant part before or alongside your code PR.
+
+## Development Setup
+1.  **Clone the repository:**
+
+    ```shell
+    gh repo clone google/adk-python
+    cd adk-python
+    ```
+
+2.  **Install uv:**
+
+    Check out [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+3.  **Create and activate a virtual environment:**
+
+    **NOTE**: ADK supports Python 3.9+. Python 3.11 and above is strongly recommended.
+
+    Create a workspace venv using uv.
+
+    ```shell
+    uv venv --python "python3.11" ".venv"
+    ```
+
+    Activate the workspace venv.
+
+    ```shell
+    source .venv/bin/activate
+    ```
+
+    **windows**
+    ```shell
+    source .\.venv\Scripts\activate
+    ```
+
+4.  **Install dependencies:**
+
+    ```shell
+    uv sync --all-extras
+    ```
+
+    **NOTE**: for convenience, installing all extra deps as a starting point.
+
+5.  **Run unit tests:**
+
+    ```shell
+    pytest ./tests/unittests
+    ```
+
+    NOTE: for accurately repro test failure, only include `test` and `eval` as
+    extra dependencies.
+
+    ```shell
+    uv sync --extra test --extra eval
+    pytest ./tests/unittests
+    ```
+
+6.  **Auto-format the code:**
+
+    **NOTE**: We use `isort` and `pyink` for styles. Use the included
+    autoformat.sh to auto-format.
+
+    ```shell
+    ./autoformat.sh
+    ```
+
+7. **Build the wheel file:**
+
+    ```shell
+    uv build
+    ```
+
+8.  **Test the locally built wheel file:**
+    Have a simple testing folder setup as mentioned in the
+    [quickstart](https://google.github.io/adk-docs/get-started/quickstart/).
+
+    Then following below steps to test your changes:
+
+    Create a clean venv and activate it:
+
+    ```shell
+    VENV_PATH=~/venvs/adk-quickstart
+    ```
+
+    ```shell
+    command -v deactivate >/dev/null 2>&1 && deactivate
+    ```
+
+    ```shell
+    rm -rf $VENV_PATH \
+      && python3 -m venv $VENV_PATH \
+      && source $VENV_PATH/bin/activate
+    ```
+
+    Install the locally built wheel file:
+
+    ```shell
+    pip install dist/google_adk-<version>-py3-none-any.whl
+    ```
+
+## Contributing Resources
+
+[Contributing folder](https://github.com/google/adk-python/tree/main/contributing/samples) has resources that is helpful for contributors.
+
+
+## Code reviews
+
+All submissions, including submissions by project members, require review. We
+use GitHub pull requests for this purpose. Consult
+[GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
+information on using pull requests.
+
+## LICENSE
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+## CHANGELOG.md
+# Changelog
+
+## [1.2.1](https://github.com/google/adk-python/compare/v1.2.0...v1.2.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* Import deprecated from typing_extensions ([068df04](https://github.com/google/adk-python/commit/068df04bcef694725dd36e09f4476b5e67f1b456))
+
+
+## [1.2.0](https://github.com/google/adk-python/compare/v1.1.1...v1.2.0) (2025-06-04)
+
+
+### Features
+
+* Add agent engine as a deployment option to the ADK CLI ([2409c3e](https://github.com/google/adk-python/commit/2409c3ef192262c80f5328121f6dc4f34265f5cf))
+* Add an option to use gcs artifact service in adk web. ([8d36dbd](https://github.com/google/adk-python/commit/8d36dbda520b1c0dec148e1e1d84e36ddcb9cb95))
+* Add index tracking to handle parallel tool call using litellm ([05f4834](https://github.com/google/adk-python/commit/05f4834759c9b1f0c0af9d89adb7b81ea67d82c8))
+* Add sortByColumn functionality to List Operation ([af95dd2](https://github.com/google/adk-python/commit/af95dd29325865ec30a1945b98e65e457760e003))
+* Add implementation for  `get_eval_case`, `update_eval_case` and `delete_eval_case` for the local eval sets manager. ([a7575e0](https://github.com/google/adk-python/commit/a7575e078a564af6db3f42f650e94ebc4f338918))
+* Expose more config of VertexAiSearchTool from latest Google GenAI SDK ([2b5c89b](https://github.com/google/adk-python/commit/2b5c89b3a94e82ea4a40363ea8de33d9473d7cf0))
+* New Agent Visualization ([da4bc0e](https://github.com/google/adk-python/commit/da4bc0efc0dd96096724559008205854e97c3fd1))
+* Set the max width and height of view image dialog to be 90% ([98a635a](https://github.com/google/adk-python/commit/98a635afee399f64e0a813d681cd8521fbb49500))
+* Support Langchain StructuredTool for Langchain tool ([7e637d3](https://github.com/google/adk-python/commit/7e637d3fa05ca3e43a937e7158008d2b146b1b81))
+* Support Langchain tools that has run_manager in _run args and don't have args_schema populated ([3616bb5](https://github.com/google/adk-python/commit/3616bb5fc4da90e79eb89039fb5e302d6a0a14ec))
+* Update for anthropic models ([16f7d98](https://github.com/google/adk-python/commit/16f7d98acf039f21ec8a99f19eabf0ef4cb5268c))
+* Use bigquery scope by default in bigquery credentials. ([ba5b80d](https://github.com/google/adk-python/commit/ba5b80d5d774ff5fdb61bd43b7849057da2b4edf))
+* Add jira_agent adk samples code which connect Jira cloud ([8759a25](https://github.com/google/adk-python/commit/8759a2525170edb2f4be44236fa646a93ba863e6))
+* Render HTML artifact in chat window ([5c2ad32](https://github.com/google/adk-python/commit/5c2ad327bf4262257c3bc91010c3f8c303d3a5f5))
+* Add export to json button in the chat window ([fc3e374](https://github.com/google/adk-python/commit/fc3e374c86c4de87b4935ee9c56b6259f00e8ea2))
+* Add tooltip to the export session button ([2735942](https://github.com/google/adk-python/commit/273594215efe9dbed44d4ef85e6234bd7ba7b7ae))
+
+
+### Bug Fixes
+
+* Add adk icon for UI ([2623c71](https://github.com/google/adk-python/commit/2623c710868d832b6d5119f38e22d82adb3de66b))
+* Add cache_ok option to remove sa warning. ([841e10a](https://github.com/google/adk-python/commit/841e10ae353e0b1b3d020a26d6cac6f37981550e))
+* Add support for running python main function in UnsafeLocalCodeExecutor when the code has an if __name__ == "__main__" statement. ([95e33ba](https://github.com/google/adk-python/commit/95e33baf57e9c267a758e08108cde76adf8af69b))
+* Adk web not working on some env for windows, fixes https://github.com/google/adk-web/issues/34 ([daac8ce](https://github.com/google/adk-python/commit/daac8cedfe6d894f77ea52784f0a6d19003b2c00))
+* Assign empty inputSchema to MCP tool when converting an ADK tool that wraps a function which takes no parameters. ([2a65c41](https://github.com/google/adk-python/commit/2a65c4118bb2aa97f2a13064db884bd63c14a5f7))
+* Call all tools in parallel calls during partial authentication ([0e72efb](https://github.com/google/adk-python/commit/0e72efb4398ce6a5d782bcdcb770b2473eb5af2e))
+* Continue fetching events if there are multiple pages. ([6506302](https://github.com/google/adk-python/commit/65063023a5a7cb6cd5db43db14a411213dc8acf5))
+* Do not convert "false" value to dict ([60ceea7](https://github.com/google/adk-python/commit/60ceea72bde2143eb102c60cf33b365e1ab07d8f))
+* Enhance agent loader exception handler and expose precise error information ([7b51ae9](https://github.com/google/adk-python/commit/7b51ae97245f6990c089183734aad41fe59b3330))
+* Ensure function description is copied when ignoring parameters ([7fdc6b4](https://github.com/google/adk-python/commit/7fdc6b4417e5cf0fbc72d3117531914353d3984a))
+* Filter memory by app_name and user_id. ([db4bc98](https://github.com/google/adk-python/commit/db4bc9809c7bb6b0d261973ca7cfd87b392694be))
+* Fix filtering by user_id for vertex ai session service listing ([9d4ca4e](https://github.com/google/adk-python/commit/9d4ca4ed44cf10bc87f577873faa49af469acc25))
+* fix parameter schema generation for gemini ([5a67a94](https://github.com/google/adk-python/commit/5a67a946d2168b80dd6eba008218468c2db2e74e))
+* Handle non-indexed function call chunks with incremental fallback index ([b181cbc](https://github.com/google/adk-python/commit/b181cbc8bc629d1c9bfd50054e47a0a1b04f7410))
+* Handles function tool parsing corner case where type hints are stored as strings. ([a8a2074](https://github.com/google/adk-python/commit/a8a20743f92cd63c3d287a3d503c1913dd5ad5ae))
+* Introduce PreciseTimestamp to fix mysql datetime precision issue. ([841e10a](https://github.com/google/adk-python/commit/841e10ae353e0b1b3d020a26d6cac6f37981550e))
+* match arg case in errors ([b226a06](https://github.com/google/adk-python/commit/b226a06c0bf798f85a53c591ad12ee582703af6d))
+* ParallelAgent should only append to its immediate sub-agent, not transitive descendants ([ec8bc73](https://github.com/google/adk-python/commit/ec8bc7387c84c3f261c44cedfe76eb1f702e7b17))
+* Relax openapi spec to gemini schema conversion to tolerate more cases ([b1a74d0](https://github.com/google/adk-python/commit/b1a74d099fae44d41750b79e58455282d919dd78))
+* Remove labels from config when using API key from Google AI Studio to call model ([5d29716](https://github.com/google/adk-python/commit/5d297169d08a2d0ea1a07641da2ac39fa46b68a4))
+* **sample:** Correct text artifact saving in artifact_save_text sample ([5c6001d](https://github.com/google/adk-python/commit/5c6001d90fe6e1d15a2db6b30ecf9e7b6c26eee4))
+* Separate thinking from text parts in streaming mode ([795605a](https://github.com/google/adk-python/commit/795605a37e1141e37d86c9b3fa484a3a03e7e9a6))
+* Simplify content for ollama provider ([eaee49b](https://github.com/google/adk-python/commit/eaee49bc897c20231ecacde6855cccfa5e80d849))
+* Timeout issues for mcpstdio server when mcp tools are incorrect. ([45ef668](https://github.com/google/adk-python/commit/45ef6684352e3c8082958bece8610df60048f4a3))
+* **transfer_to_agent:** update docstring for clarity and accuracy ([854a544](https://github.com/google/adk-python/commit/854a5440614590c2a3466cf652688ba57d637205))
+* Update unit test code for test_connection ([b0403b2](https://github.com/google/adk-python/commit/b0403b2d98b2776d15475f6b525409670e2841fc))
+* Use inspect.cleandoc on function docstrings in generate_function_declaration. ([f7cb666](https://github.com/google/adk-python/commit/f7cb66620be843b8d9f3d197d6e8988e9ee0dfca))
+* Restore errors path ([32c5ffa](https://github.com/google/adk-python/commit/32c5ffa8ca5e037f41ff345f9eecf5b26f926ea1))
+* Unused import for deprecated ([ccd05e0](https://github.com/google/adk-python/commit/ccd05e0b00d0327186e3b1156f1b0216293efe21))
+* Prevent JSON parsing errors and preserve non-ascii characters in telemetry ([d587270](https://github.com/google/adk-python/commit/d587270327a8de9f33b3268de5811ac756959850))
+* Raise HTTPException when running evals in fast_api if google-adk[eval] is not installed ([1de5c34](https://github.com/google/adk-python/commit/1de5c340d8da1cedee223f6f5a8c90070a9f0298))
+* Fix typos in README for sample bigquery_agent and oauth_calendar_agent ([9bdd813](https://github.com/google/adk-python/commit/9bdd813be15935af5c5d2a6982a2391a640cab23))
+* Make tool_call one span for telemetry and renamed to execute_tool ([999a7fe](https://github.com/google/adk-python/commit/999a7fe69d511b1401b295d23ab3c2f40bccdc6f))
+* Use media type in chat window. Remove isArtifactImage and isArtifactAudio reference ([1452dac](https://github.com/google/adk-python/commit/1452dacfeb6b9970284e1ddeee6c4f3cb56781f8))
+* Set output_schema correctly for LiteLllm ([6157db7](https://github.com/google/adk-python/commit/6157db77f2fba4a44d075b51c83bff844027a147))
+* Update pending event dialog style ([1db601c](https://github.com/google/adk-python/commit/1db601c4bd90467b97a2f26fe9d90d665eb3c740))
+* Remove the gap between event holder and image ([63822c3](https://github.com/google/adk-python/commit/63822c3fa8b0bdce2527bd0d909c038e2b66dd98))
+
+
+### Documentation
+
+* Adds a sample agent to illustrate state usage via `callbacks`. ([18fbe3c](https://github.com/google/adk-python/commit/18fbe3cbfc9f2af97e4b744ec0a7552331b1d8e3))
+* Fix typos in documentation ([7aaf811](https://github.com/google/adk-python/commit/7aaf8116169c210ceda35c649b5b49fb65bbb740))
+* Change eval_dataset to eval_dataset_file_path_or_dir ([62d7bf5](https://github.com/google/adk-python/commit/62d7bf58bb1c874caaf3c56a614500ae3b52f215))
+* Fix broken link to A2A example ([0d66a78](https://github.com/google/adk-python/commit/0d66a7888b68380241b92f7de394a06df5a0cc06))
+* Fix typo in envs.py ([bd588bc](https://github.com/google/adk-python/commit/bd588bce50ccd0e70b96c7291db035a327ad4d24))
+* Updates CONTRIBUTING.md to refine setup process using uv. ([04e07b4](https://github.com/google/adk-python/commit/04e07b4a1451123272641a256c6af1528ea6523e))
+* Create and update project documentation including README.md and CONTRIBUTING.md ([f180331](https://github.com/google/adk-python/commit/f1803312c6a046f94c23cfeaed3e8656afccf7c3))
+* Rename the root agent in the example to match the example name ([94c0aca](https://github.com/google/adk-python/commit/94c0aca685f1dfa4edb44caaedc2de25cc0caa41))
+* ADK: add section comment ([349a414](https://github.com/google/adk-python/commit/349a414120fbff0937966af95864bd683f063d08))
+
+
+### Chore
+
+* Miscellaneous changes ([0724a83](https://github.com/google/adk-python/commit/0724a83aa9cda00c1b228ed47a5baa7527bb4a0a), [a9dcc58](https://github.com/google/adk-python/commit/a9dcc588ad63013d063dbe37095c0d2e870142c3), [ac52eab](https://github.com/google/adk-python/commit/ac52eab88eccafa451be7584e24aea93ff15f3f3), [a0714b8](https://github.com/google/adk-python/commit/a0714b8afc55461f315ede8451b17aad18d698dd))
+* Enable release-please workflow ([57d99aa](https://github.com/google/adk-python/commit/57d99aa7897fb229f41c2a08034606df1e1e6064))
+* Added unit test coverage for local_eval_sets_manager.py ([174afb3](https://github.com/google/adk-python/commit/174afb3975bdc7e5f10c26f3eebb17d2efa0dd59))
+* Extract common options for `adk web` and `adk api_server` ([01965bd](https://github.com/google/adk-python/commit/01965bdd74a9dbdb0ce91a924db8dee5961478b8))
+
+## 1.1.1
+
+### Features
+* Add BigQuery first-party tools. See [here](https://github.com/google/adk-python/commit/d6c6bb4b2489a8b7a4713e4747c30d6df0c07961) for more details.
+
+
+## 1.1.0
+
+### Features
+
+* Extract agent loading logic from fast_api.py to a separate AgentLoader class and support more agent definition folder/file structure.
+* Added audio play in web UI.
+* Added input transcription support for live/streaming.
+* Added support for storing eval run history locally in adk eval cli.
+* Image artifacts can now be clicked directly in chat message to view.
+* Left side panel can now be resized.
+
+### Bug Fixes
+
+* Avoid duplicating log in stderr.
+* Align event filtering and ordering logic.
+* Add handling for None param.annotation.
+* Fixed several minor bugs regarding eval tab in web UI.
+
+### Miscellaneous Chores
+
+* Updates mypy config in pyproject.toml.
+* Add google search agent in samples.
+* Update filtered schema parameters for Gemini API.
+* Adds autoformat.sh for formatting codebase.
+
+## 1.0.0
+
+### ⚠ BREAKING CHANGES
+
+* Evaluation dataset schema is finalized with strong-type pydantic models.
+  (previously saved eval file needs re-generation, for both adk eval cli and
+  the eval tab in adk web UI).
+* `BuiltInCodeExecutor` (in code_executors package) replaces
+  `BuiltInCodeExecutionTool` (previously in tools package).
+* All methods in services are now async, including session service, artifact
+  service and memory service.
+  * `list_events` and `close_session` methods are removed from session service.
+* agent.py file structure with MCP tools are now easier and simpler ([now](https://github.com/google/adk-python/blob/3b5232c14f48e1d5b170f3698d91639b079722c8/contributing/samples/mcp_stdio_server_agent/agent.py#L33) vs [before](https://github.com/google/adk-python/blob/a4adb739c0d86b9ae4587547d2653d568f6567f2/contributing/samples/mcp_agent/agent.py#L41)).
+  Old format is not working anymore.
+* `Memory` schema and `MemoryService` is redesigned.
+* Mark various class attributes as private in the classes in the `tools` package.
+* Disabled session state injection if instruction provider is used.
+  (so that you can have `{var_name}` in the instruction, which is required for code snippets)
+* Toolbox integration is revamped: tools/toolbox_tool.py → tools/toolbox_toolset.py.
+* Removes the experimental `remote_agent.py`. We'll redesign it and bring it back.
+
+### Features
+
+* Dev UI:
+  * A brand new trace view for overall agent invocation.
+  * A revamped evaluation tab and comparison view for checking eval results.
+* Introduced `BaseToolset` to allow dynamically add/remove tools for agents.
+  * Revamped MCPToolset with the new BaseToolset interface.
+  * Revamped GoogleApiTool, GoogleApiToolset and ApplicationIntegrationToolset with the new BaseToolset interface.
+  * Resigned agent.py file structure when needing MCPToolset.
+  * Added ToolboxToolset.
+* Redesigned strong-typed agent evaluation schema.
+  * Allows users to create more cohesive eval sets.
+  * Allows evals to be extended for non-text modality.
+  * Allows for a structured interaction with the uber eval system.
+* Redesigned Memory schema and MemoryService interfaces.
+* Added token usage to LlmResponse.
+* Allowed specifying `--adk_version` in `adk deploy cloud_run` cli. Default is the current version.
+
+### Bug Fixes
+
+* Fixed `adk deploy cloud_run` failing bug.
+* Fixed logs not being printed due to `google-auth` library.
+
+### Miscellaneous Chores
+
+* Display full help text when adk cli receives invalid arguments.
+* `adk web` now binds `127.0.0.1` by default, instead of 0.0.0.0.
+* `InMemoryRunner` now takes `BaseAgent` in constructor.
+* Various docstring improvements.
+* Various UI tweaks.
+* Various bug fixes.
+* Update various contributing/samples for contributors to validate the implementation.
+
+
+## 0.5.0
+
+### ⚠ BREAKING CHANGES
+
+* Updated artifact and memory service interface to be async. Agents that
+  interact with these services through callbacks or tools will now need to
+  adjust their invocation methods to be async (using await), or ensure calls
+  are wrapped in an asynchronous executor like asyncio.run(). Any service that
+  extends the base interface must also be updated.
+
+### Features
+
+* Introduced the ability to chain model callbacks.
+* Added support for async agent and model callbacks.
+* Added input transcription support for live/streaming.
+* Captured all agent code error and display on UI.
+* Set param required tag to False by default in openapi_tool.
+* Updated evaluation functions to be asynchronous.
+
+### Bug Fixes
+
+* Ensured a unique ID is generated for every event.
+* Fixed the issue when openapi_specparser has parameter.required as None.
+* Updated the 'type' value on the items/properties nested structures for Anthropic models to adhere to JSON schema.
+* Fix litellm error issues.
+
+### Miscellaneous Chores
+
+* Regenerated API docs.
+* Created a `developer` folder and added samples.
+* Updated the contributing guide.
+* Docstring improvements, typo fixings, GitHub action to enforce code styles on formatting and imports, etc.
+
+## 0.4.0
+
+### ⚠ BREAKING CHANGES
+* Set the max size of strings in database columns. MySQL mandates that all VARCHAR-type fields must specify their lengths.
+* Extract content encode/decode logic to a shared util, resolve issues with JSON serialization, and update key length for DB table to avoid key too long issue in mysql.
+* Enhance `FunctionTool` to verify if the model is providing all the mandatory arguments.
+
+### Features
+* Update ADK setup guide to improve onboarding experience.
+* feat: add ordering to recent events in database session service.
+* feat(llm_flows): support async before/after tool callbacks.
+* feat: Added --replay and --resume options to adk run cli. Check adk run --help for more details.
+* Created a new Integration Connector Tool (underlying of the ApplicationIntegrationToolSet) so that we do not force LLM to provide default value.
+
+### Bug Fixes
+
+* Don't send content with empty text to LLM.
+* Fix google search reading undefined for `renderedContent`.
+
+### Miscellaneous Chores
+* Docstring improvements, typo fixings, github action to enfore code styles on formatting and imports, etc.
+
+## 0.3.0
+
+### ⚠ BREAKING CHANGES
+
+* Auth: expose `access_token` and `refresh_token` at top level of auth
+  credentials, instead of a `dict`
+  ([commit](https://github.com/google/adk-python/commit/956fb912e8851b139668b1ccb8db10fd252a6990)).
+
+### Features
+
+* Added support for running agents with MCPToolset easily on `adk web`.
+* Added `custom_metadata` field to `LlmResponse`, which can be used to tag
+  LlmResponse via `after_model_callback`.
+* Added `--session_db_url` to `adk deploy cloud_run` option.
+* Many Dev UI improvements:
+  * Better google search result rendering.
+  * Show websocket close reason in Dev UI.
+  * Better error message showing for audio/video.
+
+### Bug Fixes
+
+* Fixed MCP tool json schema parsing issue.
+* Fixed issues in DatabaseSessionService that leads to crash.
+* Fixed functions.py.
+* Fixed `skip_summarization` behavior in `AgentTool`.
+
+### Miscellaneous Chores
+
+* README.md improvements.
+* Various code improvements.
+* Various typo fixes.
+* Bump min version of google-genai to 1.11.0.
+
+## 0.2.0
+
+### ⚠ BREAKING CHANGES
+
+* Fix typo in method name in `Event`: has_trailing_code_exeuction_result --> has_trailing_code_execution_result.
+
+### Features
+
+* `adk` CLI:
+  * Introduce `adk create` cli tool to help creating agents.
+  * Adds `--verbosity` option to `adk deploy cloud_run` to show detailed cloud
+    run deploy logging.
+* Improve the initialization error message for `DatabaseSessionService`.
+* Lazy loading for Google 1P tools to minimize the initial latency.
+* Support emitting state-change-only events from planners.
+* Lots of Dev UI updates, including:
+  * Show planner thoughts and actions in the Dev UI.
+  * Support MCP tools in Dev UI.
+    (NOTE: `agent.py` interface is temp solution and is subject to change)
+  * Auto-select the only app if only one app is available.
+  * Show grounding links generated by Google Search Tool.
+* `.env` file is reloaded on every agent run.
+
+### Bug Fixes
+
+* `LiteLlm`: arg parsing error and python 3.9 compatibility.
+* `DatabaseSessionService`: adds the missing fields; fixes event with empty
+  content not being persisted.
+* Google API Discovery response parsing issue.
+* `load_memory_tool` rendering issue in Dev UI.
+* Markdown text overflows in Dev UI.
+
+### Miscellaneous Chores
+
+* Adds unit tests in Github action.
+* Improves test coverage.
+* Various typo fixes.
+
+## 0.1.0
+
+### Features
+
+* Initial release of the Agent Development Kit (ADK).
+* Multi-agent, agent-as-workflow, and custom agent support
+* Tool authentication support
+* Rich tool support, e.g. built-in tools, google-cloud tools, third-party tools, and MCP tools
+* Rich callback support
+* Built-in code execution capability
+* Asynchronous runtime and execution
+* Session, and memory support
+* Built-in evaluation support
+* Development UI that makes local development easy
+* Deploy to Google Cloud Run, Agent Engine
+* (Experimental) Live(Bidi) audio/video agent support and Compositional Function Calling(CFC) support
+
+## autoformat.sh
+#!/bin/bash
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Autoformat ADK codebase.
+
+if ! command -v isort &> /dev/null
+then
+    echo "isort not found, refer to CONTRIBUTING.md to set up dev environment first."
+    exit
+fi
+
+if ! command -v pyink &> /dev/null
+then
+    echo "pyink not found, refer to CONTRIBUTING.md to set up dev environment first."
+    exit
+fi
+
+echo '---------------------------------------'
+echo '|  Organizing imports for src/...'
+echo '---------------------------------------'
+
+isort src/
+echo 'All done! ✨ 🍰 ✨'
+
+echo '---------------------------------------'
+echo '|  Organizing imports for tests/...'
+echo '---------------------------------------'
+
+isort tests/
+echo 'All done! ✨ 🍰 ✨'
+
+echo '---------------------------------------'
+echo '|  Organizing imports for contributing/...'
+echo '---------------------------------------'
+
+isort contributing/
+echo 'All done! ✨ 🍰 ✨'
+
+echo '---------------------------------------'
+echo '|  Auto-formatting src/...'
+echo '---------------------------------------'
+
+find -L src/ -type f -name "*.py" -exec pyink --config pyproject.toml {} +
+
+echo '---------------------------------------'
+echo '|  Auto-formatting tests/...'
+echo '---------------------------------------'
+
+find -L tests/ -type f -name "*.py" -exec pyink --config pyproject.toml {} +
+
+echo '---------------------------------------'
+echo '|  Auto-formatting contributing/...'
+echo '---------------------------------------'
+
+find -L contributing/ -type f -name "*.py" -exec pyink --config pyproject.toml {} +
+
+## pyproject.toml
+[project]
+# Project metadata. Available keys are documented at:
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata
+
+name = "google-adk"
+description = "Agent Development Kit"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
+classifiers = [ # List of https://pypi.org/classifiers/
+  "Typing :: Typed",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+  # go/keep-sorted start
+  "authlib>=1.5.1",                                  # For RestAPI Tool
+  "click>=8.1.8",                                    # For CLI tools
+  "fastapi>=0.115.0",                                # FastAPI framework
+  "google-api-python-client>=2.157.0",               # Google API client discovery
+  "google-cloud-aiplatform[agent_engines]>=1.95.1",  # For VertexAI integrations, e.g. example store.
+  "google-cloud-secret-manager>=2.22.0",             # Fetching secrets in RestAPI Tool
+  "google-cloud-speech>=2.30.0",                     # For Audio Transcription
+  "google-cloud-storage>=2.18.0, <3.0.0",            # For GCS Artifact service
+  "google-genai>=1.17.0",                            # Google GenAI SDK
+  "graphviz>=0.20.2",                                # Graphviz for graph rendering
+  "mcp>=1.8.0;python_version>='3.10'",               # For MCP Toolset
+  "opentelemetry-api>=1.31.0",                       # OpenTelemetry
+  "opentelemetry-exporter-gcp-trace>=1.9.0",
+  "opentelemetry-sdk>=1.31.0",
+  "pydantic>=2.0, <3.0.0",                           # For data validation/models
+  "python-dotenv>=1.0.0",                            # To manage environment variables
+  "PyYAML>=6.0.2",                                   # For APIHubToolset.
+  "sqlalchemy>=2.0",                                 # SQL database ORM
+  "tzlocal>=5.3",                                    # Time zone utilities
+  "typing-extensions>=4.5, <5",
+  "uvicorn>=0.34.0",                                 # ASGI server for FastAPI
+  # go/keep-sorted end
+]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://google.github.io/adk-docs/"
+repository = "https://github.com/google/adk-python"
+changelog = "https://github.com/google/adk-python/blob/main/CHANGELOG.md"
+documentation = "https://google.github.io/adk-docs/"
+
+[project.scripts]
+adk = "google.adk.cli:main"
+
+[project.optional-dependencies]
+
+dev = [
+  # go/keep-sorted start
+  "flit>=3.10.0",
+  "isort>=6.0.0",
+  "pyink>=24.10.0",
+  "pylint>=2.6.0",
+  "mypy>=1.15.0",
+  # go/keep-sorted end
+]
+
+eval = [
+  # go/keep-sorted start
+  "google-cloud-aiplatform[evaluation]>=1.87.0",
+  "pandas>=2.2.3",
+  "tabulate>=0.9.0",
+  # go/keep-sorted end
+]
+
+test = [
+  # go/keep-sorted start
+  "anthropic>=0.43.0",               # For anthropic model tests
+  "langchain-community>=0.3.17",
+  "langgraph>=0.2.60",               # For LangGraphAgent
+  "litellm>=1.71.2",                # For LiteLLM tests
+  "llama-index-readers-file>=0.4.0", # For retrieval tests
+
+  "pytest-asyncio>=0.25.0",
+  "pytest-mock>=3.14.0",
+  "pytest-xdist>=3.6.1",
+  "pytest>=8.3.4",
+  # go/keep-sorted end
+]
+
+docs = [
+  "autodoc_pydantic",
+  "furo",
+  "myst-parser",
+  "sphinx",
+  "sphinx-autodoc-typehints",
+  "sphinx-rtd-theme",
+]
+
+# Optional extensions
+extensions = [
+  "anthropic>=0.43.0",                    # For anthropic model support
+  "beautifulsoup4>=3.2.2",                # For load_web_page tool.
+  "crewai[tools];python_version>='3.10'", # For CrewaiTool
+  "docker>=7.0.0",                        # For ContainerCodeExecutor
+  "langgraph>=0.2.60",                    # For LangGraphAgent
+  "litellm>=1.63.11",                     # For LiteLLM support
+  "llama-index-readers-file>=0.4.0",      # For retrieval using LlamaIndex.
+  "lxml>=5.3.0",                          # For load_web_page tool.
+  "toolbox-core>=0.1.0",                  # For tools.toolbox_toolset.ToolboxToolset
+]
+
+
+[tool.pyink]
+# Format py files following Google style-guide
+line-length = 80
+unstable = true
+pyink-indentation = 2
+pyink-use-majority-quotes = true
+pyink-annotation-pragmas = [
+  "noqa",
+  "pylint:",
+  "type: ignore",
+  "pytype:",
+  "mypy:",
+  "pyright:",
+  "pyre-",
+]
+
+
+[build-system]
+# Build system specify which backend is used to build/install the project (flit,
+# poetry, setuptools,...). All backends are supported by `pip install`
+requires = ["flit_core >=3.8,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.sdist]
+include = ['src/**/*', 'README.md', 'pyproject.toml', 'LICENSE']
+exclude = ['src/**/*.sh']
+
+[tool.flit.module]
+name = "google.adk"
+include = ["py.typed"]
+
+[tool.isort]
+profile = "google"
+single_line_exclusions = []
+known_third_party = ["google.adk"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.9"
+exclude = "tests/"
+plugins = ["pydantic.mypy"]
+# Start with non-strict mode, and swtich to strict mode later.
+# strict = true
+disable_error_code = ["import-not-found", "import-untyped", "unused-ignore"]
+follow_imports = "skip"

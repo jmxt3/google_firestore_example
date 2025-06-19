@@ -1,0 +1,816 @@
+# Repository Digest for https://github.com/tadata-org/fastapi_mcp/
+
+## README.md
+<p align="center"><a href="https://github.com/tadata-org/fastapi_mcp"><img src="https://github.com/user-attachments/assets/7e44e98b-a0ba-4aff-a68a-4ffee3a6189c" alt="fastapi-to-mcp" height=100/></a></p>
+<h1 align="center">FastAPI-MCP</h1>
+<p align="center">Expose your FastAPI endpoints as Model Context Protocol (MCP) tools, with Auth!</p>
+<div align="center">
+
+[![PyPI version](https://img.shields.io/pypi/v/fastapi-mcp?color=%2334D058&label=pypi%20package)](https://pypi.org/project/fastapi-mcp/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/fastapi-mcp.svg)](https://pypi.org/project/fastapi-mcp/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
+[![CI](https://github.com/tadata-org/fastapi_mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/tadata-org/fastapi_mcp/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/tadata-org/fastapi_mcp/branch/main/graph/badge.svg)](https://codecov.io/gh/tadata-org/fastapi_mcp)
+
+</div>
+
+
+<p align="center"><a href="https://github.com/tadata-org/fastapi_mcp"><img src="https://github.com/user-attachments/assets/b205adc6-28c0-4e3c-a68b-9c1a80eb7d0c" alt="fastapi-mcp-usage" height="400"/></a></p>
+
+
+## Features
+
+- **Authentication** built in, using your existing FastAPI dependencies!
+
+- **FastAPI-native:** Not just another OpenAPI -> MCP converter
+
+- **Zero/Minimal configuration** required - just point it at your FastAPI app and it works
+
+- **Preserving schemas** of your request models and response models
+
+- **Preserve documentation** of all your endpoints, just as it is in Swagger
+
+- **Flexible deployment** - Mount your MCP server to the same app, or deploy separately
+
+- **ASGI transport** - Uses FastAPI's ASGI interface directly for efficient communication
+
+
+## Hosted Solution
+
+If you prefer a managed hosted solution check out [tadata.com](https://tadata.com).
+
+## Installation
+
+We recommend using [uv](https://docs.astral.sh/uv/), a fast Python package installer:
+
+```bash
+uv add fastapi-mcp
+```
+
+Alternatively, you can install with pip:
+
+```bash
+pip install fastapi-mcp
+```
+
+## Basic Usage
+
+The simplest way to use FastAPI-MCP is to add an MCP server directly to your FastAPI application:
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+
+mcp = FastApiMCP(app)
+
+# Mount the MCP server directly to your FastAPI app
+mcp.mount()
+```
+
+That's it! Your auto-generated MCP server is now available at `https://app.base.url/mcp`.
+
+## Documentation, Examples and Advanced Usage
+
+FastAPI-MCP provides [comprehensive documentation](https://fastapi-mcp.tadata.com/). Additionaly, check out the [examples directory](examples) for code samples demonstrating these features in action.
+
+## FastAPI-first Approach
+
+FastAPI-MCP is designed as a native extension of FastAPI, not just a converter that generates MCP tools from your API. This approach offers several key advantages:
+
+- **Native dependencies**: Secure your MCP endpoints using familiar FastAPI `Depends()` for authentication and authorization
+
+- **ASGI transport**: Communicates directly with your FastAPI app using its ASGI interface, eliminating the need for HTTP calls from the MCP to your API
+
+- **Unified infrastructure**: Your FastAPI app doesn't need to run separately from the MCP server (though [separate deployment](https://fastapi-mcp.tadata.com/advanced/deploy#deploying-separately-from-original-fastapi-app) is also supported)
+
+This design philosophy ensures minimum friction when adding MCP capabilities to your existing FastAPI services.
+
+
+## Development and Contributing
+
+Thank you for considering contributing to FastAPI-MCP! We encourage the community to post Issues and create Pull Requests.
+
+Before you get started, please see our [Contribution Guide](CONTRIBUTING.md).
+
+## Community
+
+Join [MCParty Slack community](https://join.slack.com/t/themcparty/shared_invite/zt-30yxr1zdi-2FG~XjBA0xIgYSYuKe7~Xg) to connect with other MCP enthusiasts, ask questions, and share your experiences with FastAPI-MCP.
+
+## Requirements
+
+- Python 3.10+ (Recommended 3.12)
+- uv
+
+## License
+
+MIT License. Copyright (c) 2025 Tadata Inc.
+
+## CONTRIBUTING.md
+# Contributing to FastAPI-MCP
+
+First off, thank you for considering contributing to FastAPI-MCP!
+
+## Development Setup
+
+1.  Make sure you have Python 3.10+ installed
+2.  Install [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager
+3.  Fork the repository
+4.  Clone your fork
+
+    ```bash
+    git clone https://github.com/YOUR-USERNAME/fastapi_mcp.git
+    cd fastapi-mcp
+
+    # Add the upstream remote
+    git remote add upstream https://github.com/tadata-org/fastapi_mcp.git
+    ```
+
+5.  Set up the development environment:
+
+    ```bash
+    uv sync
+    ```
+
+    That's it! The `uv sync` command will automatically create and use a virtual environment.
+
+6.  Install pre-commit hooks:
+
+    ```bash
+    uv run pre-commit install
+    uv run pre-commit run
+    ```
+
+    Pre-commit hooks will automatically run checks (like ruff, formatting, etc.) when you make a commit, ensuring your code follows our style guidelines.
+
+### Running Commands
+
+You have two options for running commands:
+
+1.  **With the virtual environment activated**:
+    ```bash
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+    # Then run commands directly
+    pytest
+    mypy .
+    ruff check .
+    ```
+
+2.  **Without activating the virtual environment**:
+    ```bash
+    # Use uv run prefix for all commands
+    uv run pytest
+    uv run mypy .
+    uv run ruff check .
+    ```
+
+Both approaches work - use whichever is more convenient for you.
+
+> **Note:** For simplicity, commands in this guide are mostly written **without** the `uv run` prefix. If you haven't activated your virtual environment, remember to prepend `uv run` to all python-related commands and tools.
+
+### Adding Dependencies
+
+When adding new dependencies to the library:
+
+1.  **Runtime dependencies** - packages needed to run the application:
+    ```bash
+    uv add new-package
+    ```
+
+2.  **Development dependencies** - packages needed for development, testing, or CI:
+    ```bash
+    uv add --group dev new-package
+    ```
+
+After adding dependencies, make sure to:
+1.  Test that everything works with the new package
+2.  Commit both `pyproject.toml` and `uv.lock` files:
+    ```bash
+    git add pyproject.toml uv.lock
+    git commit -m "Add new-package dependency"
+    ```
+
+## Development Process
+
+1. Fork the repository and set the upstream remote
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run type checking (`mypy .`)
+5. Run the tests (`pytest`)
+6. Format your code (`ruff check .` and `ruff format .`). Not needed if pre-commit is installed, as it will run it for you.
+7. Commit your changes (`git commit -m 'Add some amazing feature'`)
+8. Push to the branch (`git push origin feature/amazing-feature`)
+9. Open a Pull Request. Make sure the Pull Request's base branch is [the original repository's](https://github.com/tadata-org/fastapi_mcp/) `main` branch.
+
+## Code Style
+
+We use the following tools to ensure code quality:
+
+- **ruff** for linting and formatting
+- **mypy** for type checking
+
+Please make sure your code passes all checks before submitting a pull request:
+
+```bash
+# Check code formatting and style
+ruff check .
+ruff format .
+
+# Check types
+mypy .
+```
+
+## Testing
+
+We use pytest for testing. Please write tests for any new features and ensure all tests pass:
+
+```bash
+# Run all tests
+pytest
+```
+
+## Pull Request Process
+
+1. Ensure your code follows the style guidelines of the project
+2. Update the README.md with details of changes if applicable
+3. The versioning scheme we use is [SemVer](http://semver.org/)
+4. Include a descriptive commit message
+5. Your pull request will be merged once it's reviewed and approved
+
+## Code of Conduct
+
+Please note we have a code of conduct, please follow it in all your interactions with the project.
+
+- Be respectful and inclusive
+- Be collaborative
+- When disagreeing, try to understand why
+- A diverse community is a strong community
+
+## Questions?
+
+Don't hesitate to open an issue if you have any questions about contributing to FastAPI-MCP.
+## LICENSE
+MIT License
+
+Copyright (c) 2024 Tadata Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+## CHANGELOG.md
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.3.4]
+
+### Fixed
+- 🐛 Update the `mcp` dependency to `1.8.1`. Fixes [Issue #134](https://github.com/tadata-org/fastapi_mcp/issues/134) that was caused after a breaking change in mcp sdk 1.8.0.
+
+## [0.3.3]
+
+Fixes the broken release from 0.3.2.
+
+### Fixed
+- 🐛 Fix critical bug in openapi conversion (missing `param_desc` definition) (#107, #99)
+- 🐛 Fix non-ascii support (#66)
+
+## [0.3.2] - Broken
+
+This is a broken release and should not be used.
+
+### Fixed
+- 🐛 Fix a bug preventing simple setup of [basic token passthrough](docs/03_authentication_and_authorization.md#basic-token-passthrough)
+
+## [0.3.1]
+
+🚀 FastApiMCP now supports MCP Authorization!
+
+You can now add MCP-compliant OAuth configuration in a FastAPI-native way, using your existing FastAPI `Depends()` that we all know and love.
+
+### Added
+- 🎉 Support for Authentication / Authorization compliant to [MCP 2025-03-26 Specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization), using OAuth 2.1. (#10)
+- 🎉 Support passing http headers to tool calls (#82)
+
+## [0.3.0]
+
+🚀 FastApiMCP now works with ASGI-transport by default.
+
+This means the `base_url` argument is redundant, and thus has been removed.
+
+You can still set up an explicit base URL using the `http_client` argument, and injecting your own `httpx.AsyncClient` if necessary.
+
+### Removed
+- ⚠️ Breaking Change: Removed `base_url` argument since it's not used anymore by the MCP transport.
+
+### Fixed
+- 🐛 Fix short timeout issue (#71), increasing the default timeout to 10
+
+
+## [0.2.0]
+
+### Changed
+- Complete refactor from function-based API to a new class-based API with `FastApiMCP`
+- Explicit separation between MCP instance creation and mounting with `mcp = FastApiMCP(app)` followed by `mcp.mount()`
+- FastAPI-native approach for transport providing more flexible routing options
+- Updated minimum MCP dependency to v1.6.0
+
+### Added
+- Support for deploying MCP servers separately from API service
+- Support for "refreshing" with `setup_server()` when dynamically adding FastAPI routes. Fixes [Issue #19](https://github.com/tadata-org/fastapi_mcp/issues/19)
+- Endpoint filtering capabilities through new parameters:
+  - `include_operations`: Expose only specific operations by their operation IDs
+  - `exclude_operations`: Expose all operations except those with specified operation IDs
+  - `include_tags`: Expose only operations with specific tags
+  - `exclude_tags`: Expose all operations except those with specific tags
+
+### Fixed
+- FastAPI-native approach for transport. Fixes [Issue #28](https://github.com/tadata-org/fastapi_mcp/issues/28)
+- Numerous bugs in OpenAPI schema to tool conversion, addressing [Issue #40](https://github.com/tadata-org/fastapi_mcp/issues/40) and [Issue #45](https://github.com/tadata-org/fastapi_mcp/issues/45)
+
+### Removed
+- Function-based API (`add_mcp_server`, `create_mcp_server`, etc.)
+- Custom tool support via `@mcp.tool()` decorator
+
+## [0.1.8]
+
+### Fixed
+- Remove unneeded dependency.
+
+## [0.1.7]
+
+### Fixed
+- [Issue #34](https://github.com/tadata-org/fastapi_mcp/issues/34): Fix syntax error.
+
+## [0.1.6]
+
+### Fixed
+- [Issue #23](https://github.com/tadata-org/fastapi_mcp/issues/23): Hide handle_mcp_connection tool.
+
+## [0.1.5]
+
+### Fixed
+- [Issue #25](https://github.com/tadata-org/fastapi_mcp/issues/25): Dynamically creating tools function so tools are useable.
+
+## [0.1.4]
+
+### Fixed
+- [Issue #8](https://github.com/tadata-org/fastapi_mcp/issues/8): Converted tools unuseable due to wrong passing of arguments.
+
+## [0.1.3]
+
+### Fixed
+- Dependency resolution issue with `mcp` package and `pydantic-settings`
+
+## [0.1.2]
+
+### Changed
+- Complete refactor: transformed from a code generator to a direct integration library
+- Replaced the CLI-based approach with a direct API for adding MCP servers to FastAPI applications
+- Integrated MCP servers now mount directly to FastAPI apps at runtime instead of generating separate code
+- Simplified the API with a single `add_mcp_server` function for quick integration
+- Removed code generation entirely in favor of runtime integration
+
+### Added
+- Main `add_mcp_server` function for simple MCP server integration
+- Support for adding custom MCP tools alongside API-derived tools
+- Improved test suite
+- Manage with uv
+
+### Removed
+- CLI interface and all associated commands (generate, run, install, etc.)
+- Code generation functionality
+
+## [0.1.1] - 2024-07-03
+
+### Fixed
+- Added support for PEP 604 union type syntax (e.g., `str | None`) in FastAPI endpoints
+- Improved type handling in model field generation for newer Python versions (3.10+)
+- Fixed compatibility issues with modern type annotations in path parameters, query parameters, and Pydantic models
+
+## [0.1.0] - 2024-03-08
+
+### Added
+- Initial release of FastAPI-MCP
+- Core functionality for converting FastAPI applications to MCP servers
+- CLI tool for generating, running, and installing MCP servers
+- Automatic discovery of FastAPI endpoints
+- Type-safe conversion from FastAPI endpoints to MCP tools
+- Documentation preservation from FastAPI to MCP
+- Claude integration for easy installation and use
+- API integration that automatically makes HTTP requests to FastAPI endpoints
+- Examples directory with sample FastAPI application
+- Basic test suite
+## README_zh-CN.md
+<p align="center"><a href="https://github.com/tadata-org/fastapi_mcp"><img src="https://github.com/user-attachments/assets/609d5b8b-37a1-42c4-87e2-f045b60026b1" alt="fastapi-to-mcp" height="100"/></a></p>
+<h1 align="center">FastAPI-MCP</h1>
+<p align="center">一个零配置工具，用于自动将 FastAPI 端点公开为模型上下文协议（MCP）工具。</p>
+<div align="center">
+
+[![PyPI version](https://badge.fury.io/py/fastapi-mcp.svg)](https://pypi.org/project/fastapi-mcp/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/fastapi-mcp.svg)](https://pypi.org/project/fastapi-mcp/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
+![](https://badge.mcpx.dev?type=dev 'MCP Dev')
+[![CI](https://github.com/tadata-org/fastapi_mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/tadata-org/fastapi_mcp/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/tadata-org/fastapi_mcp/branch/main/graph/badge.svg)](https://codecov.io/gh/tadata-org/fastapi_mcp)
+
+</div>
+
+<p align="center"><a href="https://github.com/tadata-org/fastapi_mcp"><img src="https://github.com/user-attachments/assets/1cba1bf2-2fa4-46c7-93ac-1e9bb1a95257" alt="fastapi-mcp-usage" height="400"/></a></p>
+
+> 注意：最新版本请参阅 [README.md](README.md).
+
+## 特点
+
+- **直接集成** - 直接将 MCP 服务器挂载到您的 FastAPI 应用
+- **零配置** - 只需指向您的 FastAPI 应用即可工作
+- **自动发现** - 所有 FastAPI 端点并转换为 MCP 工具
+- **保留模式** - 保留您的请求模型和响应模型的模式
+- **保留文档** - 保留所有端点的文档，就像在 Swagger 中一样
+- **灵活部署** - 将 MCP 服务器挂载到同一应用，或单独部署
+- **ASGI 传输** - 默认使用 FastAPI 的 ASGI 接口直接通信，提高效率
+
+## 安装
+
+我们推荐使用 [uv](https://docs.astral.sh/uv/)，一个快速的 Python 包安装器：
+
+```bash
+uv add fastapi-mcp
+```
+
+或者，您可以使用 pip 安装：
+
+```bash
+pip install fastapi-mcp
+```
+
+## 基本用法
+
+使用 FastAPI-MCP 的最简单方法是直接将 MCP 服务器添加到您的 FastAPI 应用中：
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+
+mcp = FastApiMCP(app)
+
+# 直接将 MCP 服务器挂载到您的 FastAPI 应用
+mcp.mount()
+```
+
+就是这样！您的自动生成的 MCP 服务器现在可以在 `https://app.base.url/mcp` 访问。
+
+## 工具命名
+
+FastAPI-MCP 使用 FastAPI 路由中的`operation_id`作为 MCP 工具的名称。如果您不指定`operation_id`，FastAPI 会自动生成一个，但这些名称可能比较晦涩。
+
+比较以下两个端点定义：
+
+```python
+# 自动生成的 operation_id（类似于 "read_user_users__user_id__get"）
+@app.get("/users/{user_id}")
+async def read_user(user_id: int):
+    return {"user_id": user_id}
+
+# 显式 operation_id（工具将被命名为 "get_user_info"）
+@app.get("/users/{user_id}", operation_id="get_user_info")
+async def read_user(user_id: int):
+    return {"user_id": user_id}
+```
+
+为了获得更清晰、更直观的工具名称，我们建议在 FastAPI 路由定义中添加显式的`operation_id`参数。
+
+要了解更多信息，请阅读 FastAPI 官方文档中关于 [路径操作的高级配置](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/) 的部分。
+
+## 高级用法
+
+FastAPI-MCP 提供了多种方式来自定义和控制 MCP 服务器的创建和配置。以下是一些高级用法模式：
+
+### 自定义模式描述
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+
+mcp = FastApiMCP(
+    app,
+    name="我的 API MCP",
+    describe_all_responses=True,     # 在工具描述中包含所有可能的响应模式
+    describe_full_response_schema=True  # 在工具描述中包含完整的 JSON 模式
+)
+
+mcp.mount()
+```
+
+### 自定义公开的端点
+
+您可以使用 Open API 操作 ID 或标签来控制哪些 FastAPI 端点暴露为 MCP 工具：
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+
+# 仅包含特定操作
+mcp = FastApiMCP(
+    app,
+    include_operations=["get_user", "create_user"]
+)
+
+# 排除特定操作
+mcp = FastApiMCP(
+    app,
+    exclude_operations=["delete_user"]
+)
+
+# 仅包含具有特定标签的操作
+mcp = FastApiMCP(
+    app,
+    include_tags=["users", "public"]
+)
+
+# 排除具有特定标签的操作
+mcp = FastApiMCP(
+    app,
+    exclude_tags=["admin", "internal"]
+)
+
+# 结合操作 ID 和标签（包含模式）
+mcp = FastApiMCP(
+    app,
+    include_operations=["user_login"],
+    include_tags=["public"]
+)
+
+mcp.mount()
+```
+
+关于过滤的注意事项：
+- 您不能同时使用`include_operations`和`exclude_operations`
+- 您不能同时使用`include_tags`和`exclude_tags`
+- 您可以将操作过滤与标签过滤结合使用（例如，使用`include_operations`和`include_tags`）
+- 当结合过滤器时，将采取贪婪方法。匹配任一标准的端点都将被包含
+
+### 与原始 FastAPI 应用分开部署
+
+您不限于在创建 MCP 的同一个 FastAPI 应用上提供 MCP 服务。
+
+您可以从一个 FastAPI 应用创建 MCP 服务器，并将其挂载到另一个应用上：
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+# 您的 API 应用
+api_app = FastAPI()
+# ... 在 api_app 上定义您的 API 端点 ...
+
+# 一个单独的 MCP 服务器应用
+mcp_app = FastAPI()
+
+# 从 API 应用创建 MCP 服务器
+mcp = FastApiMCP(api_app)
+
+# 将 MCP 服务器挂载到单独的应用
+mcp.mount(mcp_app)
+
+# 现在您可以分别运行两个应用：
+# uvicorn main:api_app --host api-host --port 8001
+# uvicorn main:mcp_app --host mcp-host --port 8000
+```
+
+### 在 MCP 服务器创建后添加端点
+
+如果您在创建 MCP 服务器后向 FastAPI 应用添加端点，您需要刷新服务器以包含它们：
+
+```python
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+# ... 定义初始端点 ...
+
+# 创建 MCP 服务器
+mcp = FastApiMCP(app)
+mcp.mount()
+
+# 在 MCP 服务器创建后添加新端点
+@app.get("/new/endpoint/", operation_id="new_endpoint")
+async def new_endpoint():
+    return {"message": "Hello, world!"}
+
+# 刷新 MCP 服务器以包含新端点
+mcp.setup_server()
+```
+
+### 与 FastAPI 应用的通信
+
+FastAPI-MCP 默认使用 ASGI 传输，这意味着它直接与您的 FastAPI 应用通信，而不需要发送 HTTP 请求。这样更高效，也不需要基础 URL。
+
+如果您需要指定自定义基础 URL 或使用不同的传输方法，您可以提供自己的 `httpx.AsyncClient`：
+
+```python
+import httpx
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
+
+app = FastAPI()
+
+# 使用带有特定基础 URL 的自定义 HTTP 客户端
+custom_client = httpx.AsyncClient(
+    base_url="https://api.example.com",
+    timeout=30.0
+)
+
+mcp = FastApiMCP(
+    app,
+    http_client=custom_client
+)
+
+mcp.mount()
+```
+
+## 示例
+
+请参阅 [examples](examples) 目录以获取完整示例。
+
+## 使用 SSE 连接到 MCP 服务器
+
+一旦您的集成了 MCP 的 FastAPI 应用运行，您可以使用任何支持 SSE 的 MCP 客户端连接到它，例如 Cursor：
+
+1. 运行您的应用。
+
+2. 在 Cursor -> 设置 -> MCP 中，使用您的 MCP 服务器端点的URL（例如，`http://localhost:8000/mcp`）作为 sse。
+
+3. Cursor 将自动发现所有可用的工具和资源。
+
+## 使用 [mcp-proxy stdio](https://github.com/sparfenyuk/mcp-proxy?tab=readme-ov-file#1-stdio-to-sse) 连接到 MCP 服务器
+
+如果您的 MCP 客户端不支持 SSE，例如 Claude Desktop：
+
+1. 运行您的应用。
+
+2. 安装 [mcp-proxy](https://github.com/sparfenyuk/mcp-proxy?tab=readme-ov-file#installing-via-pypi)，例如：`uv tool install mcp-proxy`。
+
+3. 在 Claude Desktop 的 MCP 配置文件（`claude_desktop_config.json`）中添加：
+
+在 Windows 上：
+```json
+{
+  "mcpServers": {
+    "my-api-mcp-proxy": {
+        "command": "mcp-proxy",
+        "args": ["http://127.0.0.1:8000/mcp"]
+    }
+  }
+}
+```
+在 MacOS 上：
+```json
+{
+  "mcpServers": {
+    "my-api-mcp-proxy": {
+        "command": "/Full/Path/To/Your/Executable/mcp-proxy",
+        "args": ["http://127.0.0.1:8000/mcp"]
+    }
+  }
+}
+```
+通过在终端运行`which mcp-proxy`来找到 mcp-proxy 的路径。
+
+4. Claude Desktop 将自动发现所有可用的工具和资源
+
+## 开发和贡献
+
+感谢您考虑为 FastAPI-MCP 做出贡献！我们鼓励社区发布问题和拉取请求。
+
+在开始之前，请参阅我们的 [贡献指南](CONTRIBUTING.md)。
+
+## 社区
+
+加入 [MCParty Slack 社区](https://join.slack.com/t/themcparty/shared_invite/zt-30yxr1zdi-2FG~XjBA0xIgYSYuKe7~Xg)，与其他 MCP 爱好者联系，提问，并分享您使用 FastAPI-MCP 的经验。
+
+## 要求
+
+- Python 3.10+（推荐3.12）
+- uv
+
+## 许可证
+
+MIT License. Copyright (c) 2024 Tadata Inc.
+
+## pyproject.toml
+[build-system]
+requires = ["hatchling", "tomli"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fastapi-mcp"
+version = "0.3.4"
+description = "Automatic MCP server generator for FastAPI applications - converts FastAPI endpoints to MCP tools for LLM integration"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Tadata Inc.", email = "itay@tadata.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+    "Framework :: FastAPI",
+]
+keywords = ["fastapi", "openapi", "mcp", "llm", "claude", "ai", "tools", "api", "conversion", "modelcontextprotocol"]
+dependencies = [
+    "fastapi>=0.100.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "mcp>=1.8.1",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.5.2",
+    "uvicorn>=0.20.0",
+    "httpx>=0.24.0",
+    "requests>=2.25.0",
+    "tomli>=2.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.9.10",
+    "types-setuptools>=75.8.2.20250305",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.1",
+    "pre-commit>=4.2.0",
+    "pyjwt>=2.10.1",
+    "cryptography>=44.0.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/tadata-org/fastapi_mcp"
+Documentation = "https://github.com/tadata-org/fastapi_mcp#readme"
+"Bug Tracker" = "https://github.com/tadata-org/fastapi_mcp/issues"
+"PyPI" = "https://pypi.org/project/fastapi-mcp/"
+"Source Code" = "https://github.com/tadata-org/fastapi_mcp"
+"Changelog" = "https://github.com/tadata-org/fastapi_mcp/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["fastapi_mcp"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = "test_*.py"

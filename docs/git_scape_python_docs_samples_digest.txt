@@ -1,0 +1,2118 @@
+# Repository Digest for https://github.com/GoogleCloudPlatform/python-docs-samples/
+
+## README.md
+# Google Cloud Platform Python Samples
+
+Python samples for [Google Cloud Platform products][cloud].
+
+[![Build Status][py-2.7-shield]][py-2.7-link] [![Build Status][py-3.9-shield]][py-3.9-link] [![Build Status][py-3.10-shield]][py-3.10-link] [![Build Status][py-3.11-shield]][py-3.11-link] [![Build Status][py-3.12-shield]][py-3.12-link] [![Build Status][py-3.13-shield]][py-3.13-link]
+
+## Google Cloud Samples
+
+Check out some of the samples found on this repository on the [Google Cloud Samples](https://cloud.google.com/docs/samples?l=python) page.
+
+## Setup
+
+1. Install [`pip` and `virtualenv`][cloud_python_setup] if you do not already have them.
+
+1. Clone this repository:
+
+    ```
+    git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
+    ```
+
+1. Obtain authentication credentials.
+
+    Create local credentials by running the following command and following the
+    oauth2 flow (read more about the command [here][auth_command]):
+
+    ```
+    gcloud auth application-default login
+    ```
+
+    Read more about [Google Cloud Platform Authentication][gcp_auth].
+
+## How to run a sample
+
+1. Change directory to one of the sample folders, e.g. `logging/cloud-client`:
+
+    ```
+    cd logging/cloud-client/
+    ```
+
+1. Create a virtualenv. Samples are compatible with Python 3.6+.
+
+    ```
+    python3 -m venv env
+    source env/bin/activate
+    ```
+
+1. Install the dependencies needed to run the samples.
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+1. Run the sample:
+
+    ```
+    python snippets.py
+    ```
+
+## Contributing
+
+Contributions welcome! See the [Contributing Guide](CONTRIBUTING.md).
+
+[slack_badge]: https://img.shields.io/badge/slack-Google%20Cloud%20Platform-E01563.svg	
+[slack_link]: https://googlecloud-community.slack.com/
+[cloud]: https://cloud.google.com/
+[cloud_python_setup]: https://cloud.google.com/python/setup
+[auth_command]: https://cloud.google.com/sdk/gcloud/reference/beta/auth/application-default/login
+[gcp_auth]: https://cloud.google.com/docs/authentication#projects_and_resources
+
+[py-2.7-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-2.7.svg
+[py-2.7-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-2.7.html
+[py-3.9-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.9.svg
+[py-3.9-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.9.html
+[py-3.10-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-310.svg
+[py-3.10-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.10.html
+[py-3.11-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-311.svg
+[py-3.11-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.11.html
+[py-3.12-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.12.svg
+[py-3.12-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.12.html
+[py-3.13-shield]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.13.svg
+[py-3.13-link]: https://storage.googleapis.com/cloud-devrel-public/python-docs-samples/badges/py-3.13.html
+
+## CONTRIBUTING.md
+# How to become a contributor and submit your own code
+
+Patches are always welcome! 
+
+If you're interested in contributing a new code sample or making large changes to existing samples,
+please open an issue for discussion first.
+
+## Contributing A Patch
+
+1. Submit an issue describing your proposed change to this repository.
+2. A repo owner will respond to your issue promptly. If you don't see a response within
+   a few days, please ping the owner assigned to your issue.
+3. If your proposed change is accepted, and you haven't already done so, sign a
+   Contributor License Agreement (see details above).
+4. Fork this repo, develop and test your code changes. Tests are required for all
+   samples. See the [Authoring Guide](AUTHORING_GUIDE.md) for details.
+5. Ensure that your code adheres to the existing style in the sample to which
+   you are contributing.
+6. Ensure that your code has an appropriate set of unit tests which all pass.
+7. Submit a pull request.
+
+## Contributor License Agreements
+
+Before we can take contributions, we have to jump a couple of legal hurdles.
+
+Please fill out either the individual or corporate Contributor License
+Agreement (CLA).
+
+  * If you are an individual writing original source code and you're sure you
+    own the intellectual property, then you'll need to sign an [individual CLA](https://developers.google.com/open-source/cla/individual).
+  * If you work for a company that wants to allow you to contribute your work,
+    then you'll need to sign a [corporate CLA](https://developers.google.com/open-source/cla/corporate).
+
+Follow either of the two links above to access the appropriate CLA and
+instructions for how to sign and return it. Once we receive it, we'll
+be able to accept your pull requests.
+
+## Setting up a development environment
+
+* [Mac development environment guide](MAC_SETUP.md)
+
+## Authoring, testing, and contributing samples
+
+See [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md).
+
+## Code Reviews
+
+After meeting the above criteria, your code will need to be approved by two reviewers before it can be merged into main. One will be a [CODEOWNER](.github/CODEOWNERS) for the product you are contributing to, and the other will be a repo owner, there to double check for anything that might be detrimental to the overall repo health (things that could cause future tech debt, test flakiness, etc.). Both will automatically be assigned. Some product areas have multiple folks who can act as the CODEOWNER, and you may be working more closely with a teammate who isn't the automatically assigned reviewer. In that case, it is perfectly fine to manually assign the teammate more familiar with this work as your CODEOWNER reviewer. If you do not hear from your repo owner reviewer within a day (and you know they are not OOO), send them a friendly ping so that you can better understand the review cadence for your PR. All the repo owners are juggling reviews alongside other work, and their velocities can vary, but they are happy to hear from you. If you see that your repo owner reviewer is OOO, you can use the "blunderbuss: assign" label to assign a new reviewer. 
+
+## CODE_OF_CONDUCT.md
+# Contributor Code of Conduct
+
+As contributors and maintainers of this project,
+and in the interest of fostering an open and welcoming community,
+we pledge to respect all people who contribute through reporting issues,
+posting feature requests, updating documentation,
+submitting pull requests or patches, and other activities.
+
+We are committed to making participation in this project
+a harassment-free experience for everyone,
+regardless of level of experience, gender, gender identity and expression,
+sexual orientation, disability, personal appearance,
+body size, race, ethnicity, age, religion, or nationality.
+
+Examples of unacceptable behavior by participants include:
+
+* The use of sexualized language or imagery
+* Personal attacks
+* Trolling or insulting/derogatory comments
+* Public or private harassment
+* Publishing other's private information,
+such as physical or electronic
+addresses, without explicit permission
+* Other unethical or unprofessional conduct.
+
+Project maintainers have the right and responsibility to remove, edit, or reject
+comments, commits, code, wiki edits, issues, and other contributions
+that are not aligned to this Code of Conduct.
+By adopting this Code of Conduct,
+project maintainers commit themselves to fairly and consistently
+applying these principles to every aspect of managing this project.
+Project maintainers who do not follow or enforce the Code of Conduct
+may be permanently removed from the project team.
+
+This code of conduct applies both within project spaces and in public spaces
+when an individual is representing the project or its community.
+
+Instances of abusive, harassing, or otherwise unacceptable behavior
+may be reported by opening an issue
+or contacting one or more of the project maintainers.
+
+This Code of Conduct is adapted from the [Contributor Covenant](http://contributor-covenant.org), version 1.2.0,
+available at [http://contributor-covenant.org/version/1/2/0/](http://contributor-covenant.org/version/1/2/0/)
+
+## SECURITY.md
+# Security Policy
+
+To report a security issue, please use [g.co/vulnz](https://g.co/vulnz).
+
+The Google Security Team will respond within 5 working days of your report on g.co/vulnz.
+
+We use g.co/vulnz for our intake, and do coordination and disclosure here using GitHub Security Advisory to privately discuss and fix the issue.
+
+## LICENSE
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+## .repo-metadata.json
+{
+  "default_version": "v1",
+  "name": "python-docs-samples",
+  "name_pretty": "Google Cloud Python Samples",
+  "issue_tracker": "https://github.com/GoogleCloudPlatform/python-docs-samples/issues",
+  "language": "python",
+  "repo": "GoogleCloudPlatform/python-docs-samples"
+}
+
+## AUTHORING_GUIDE.md
+# Python Sample Authoring Guide
+
+The [Google Cloud Samples Style Guide][style-guide] is considered the primary
+guidelines for all Google Cloud samples. This section details some additional,
+Python-specific rules that will be merged into the Samples Style Guide in the
+near future.
+
+[style-guide]: https://googlecloudplatform.github.io/samples-style-guide/
+
+We're happy you want to write a Python sample! Like a lot of Pythonistas, we're
+opinionated and fussy. This guide is a reference for the format and style
+expected of samples contributed to the
+[python-docs-samples](https://github.com/GoogleCloudPlatform/python-docs-samples)
+repo. The guidelines below are intended to ensure that all Python samples meet
+the following goals:
+
+* **Copy-paste-runnable.** A developer should be able to copy and paste the code
+into their own environment and run it with as few modifications as possible.
+* **Teach through code.** Each sample should demonstrate best practices for
+interacting with Google Cloud libraries, APIs, or services.
+* **Idiomatic.** Each sample should follow widely accepted Python best practices
+as covered below.
+
+## FAQs
+
+### Are there any canonical samples?
+
+We recommend referencing the following samples and sample tests:
+
+* [Storage client
+   samples](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/storage/cloud-client)
+
+### Where should I put my samples?
+
+See [Folder Location](#folder-location). Samples live in this repository,
+**python-docs-samples**, or in a library repository.
+
+### Where are the client libraries?
+
+Python libraries repositories live in <https://github.com/googleapis/> in
+repositories named **python-API**. Each repository contains _one_ library. For
+example, <https://github.com/googleapis/python-bigquery> contains the
+`google-cloud-bigquery` library.
+
+### Who reviews my PR?
+
+This is a work in progress - in **python-docs-samples**, your PR will
+automatically be assigned to one of the reviewers in
+[@GoogleCloudPlatform/python-samples-reviewers](https://github.com/orgs/GoogleCloudPlatform/teams/python-samples-reviewers).
+You can assign a new person using the `blunderbuss:assign` label if your
+assignee is OOO or busy. You can (and probably should) also assign a teammate in
+addition to the auto-assigned owner to review your code for product-specific
+needs.
+
+In **library repositories** GitHub should automatically assign a reviewer from
+python-samples-reviewers. If no reviewer is automatically assigned, contact
+[@googleapis/python-samples-reviewers](https://github.com/orgs/googleapis/teams/python-samples-reviewers).
+
+Please reach out to your assigned reviewer if it's been more than 2 days and you
+haven't gotten a response!
+
+### How do I set up my environment?
+
+You should install the latest patch version of each minor version listed in
+[Python Versions](#python-versions).
+
+We recommend using the Python version management tool
+[Pyenv](https://github.com/pyenv/pyenv) if you are using MacOS or Linux.
+
+**Googlers:** See [the internal Python policies
+doc](https://g3doc.corp.google.com/company/teams/cloud-devrel/dpe/samples/python.md?cl=head).
+
+**Using MacOS?:** See [Setting up a Mac development environment with pyenv and
+pyenv-virtualenv](MAC_SETUP.md).
+
+Afterwards, see [Test Environment Setup](#test-environment-setup).
+
+## Sample Guidelines
+
+This section covers guidelines for Python samples. Note that [Testing
+Guidelines](#testing-guidelines) are covered separately below.
+
+### Folder Location
+
+Samples that primarily show the use of one client library should be placed in
+the client library repository `googleapis/python-{api}`. Other samples should be
+placed in this repository `python-docs-samples`.
+
+**Library repositories:** Each sample should be in a folder under the top-level
+samples folder `samples` in the client library repository. See the
+[Text-to-Speech
+samples](https://github.com/googleapis/python-texttospeech/tree/main/samples)
+for an example.
+
+**python-docs-samples:** Each sample should be in a folder under the top-level
+folder of
+[python-docs-samples](https://github.com/GoogleCloudPlatform/python-docs-samples)
+that corresponds to the Google Cloud service or API used by the sample. For
+example, a sample demonstrating how to work with Composer should be in a
+subfolder under the
+[python-docs-samples/composer](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/composer)
+folder.
+
+Conceptually related samples under a service or API should be grouped into a
+subfolder. For example, App Engine Standard samples are under the
+[appengine/standard](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/appengine/standard)
+folder, and App Engine Flex samples are under the
+[appengine/flexible](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/appengine/flexible)
+folder.
+
+If your sample is a set of discrete code snippets that each demonstrate a single
+operation, these should be grouped into a `snippets` folder. For example, see
+the snippets in the
+[bigtable/snippets/writes](https://github.com/googleapis/python-bigtable/tree/main/samples/snippets/writes)
+folder.
+
+If your sample is a quickstart — intended to demonstrate how to quickly get
+started with using a service or API — it should be in a _quickstart_ folder.
+
+### Python Versions
+
+Samples should support Python 3.9, 3.10, 3.11, 3.12 and 3.13.
+
+If the API or service your sample works with has specific Python version
+requirements different from those mentioned above, the sample should support
+those requirements.
+
+### License Header
+
+Source code files should always begin with an Apache 2.0 license header. See the
+instructions in the repo license file on [how to apply the Apache license to
+your
+work](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/LICENSE#L178-L201).
+For example, see the license header for the [Datastore client quickstart
+sample](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/datastore/cloud-client/quickstart.py#L1-L15).
+
+### Shebang
+
+If, and only if, your sample application is a command-line application, then
+include a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) as the first
+line. Separate the shebang line from the rest of the application with a blank
+line. The shebang line for a Python application should always be:
+
+```python
+#!/usr/bin/env python
+```
+
+Don't include shebang lines in web applications or test files.
+
+### Coding Style
+
+All Python samples should follow the best practices defined in the [PEP 8 style
+guide](https://www.python.org/dev/peps/pep-0008/) and the [Google Python Style
+Guide](http://google.github.io/styleguide/pyguide.html). The automated linting
+process for Python samples uses [flake8](http://flake8.pycqa.org/en/latest/) to
+verify conformance to common Python coding standards, so the use of flake8 is
+recommended.
+
+If you prefer to use [pylint](https://www.pylint.org/), note that Python samples
+for this repo are not required to conform to pylint’s default settings outside
+the scope of PEP 8, such as the “too many arguments” or “too many local
+variables” warnings.
+
+The use of [Black](https://pypi.org/project/black/) to standardize code
+formatting and simplify diffs is recommended.
+
+The default noxfile has `blacken` session for convenience. Here are some
+examples.
+
+If you have pyenv configured:
+
+```sh
+nox -s blacken
+```
+
+If you only have docker:
+
+```sh
+cd proj_directory
+../scripts/run_tests_local.sh . blacken
+```
+
+Owlbot is an automated tool that will run the `blacken` session automatically on
+new pull requests.
+
+In addition to the syntax guidelines covered in PEP 8, samples should strive to
+follow the Pythonic philosophy outlined in the [PEP 20 - Zen of
+Python](https://www.python.org/dev/peps/pep-0020/) as well as the readability
+tenets presented in Donald Knuth's _[Literate
+Programming](https://en.wikipedia.org/wiki/Literate_programming)_. Notably, your
+sample program should be self-contained, readable from top to bottom, and fairly
+self-documenting. Prefer descriptive names, and use comments and docstrings only
+as needed to further clarify the code’s intent. Always introduce functions and
+variables before they are used. Prefer less indirection. Prefer imperative
+programming as it is easier to understand.
+
+### Importing Google Cloud Libraries
+
+Follow this style for importing Google Cloud libraries:
+
+```py
+from google.cloud import texttospeech_v1
+```
+
+All commonly used clients and types are exposed under `texttospeech_v1`.
+
+```py
+from google.cloud import texttospeech_v1
+
+client = texttospeech_v1.TextToSpeechClient()
+
+audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+)
+```
+
+### Creating Request Objects for GAPICs
+
+GAPIC libraries are generated from
+[protos](https://github.com/googleapis/googleapis) that define the API surface
+via a [generator](https://github.com/googleapis/gapic-generator-python). GAPIC
+libraries have library type `GAPIC_AUTO` in `.repo-metadata.json` located in the
+root of the repository. Some `GAPIC_COMBO` libraries will also expose
+[`proto-plus`](https://github.com/googleapis/proto-plus-python/) types.
+
+Because they are generated, GAPIC libraries share a common interface. All API
+proto messages are exposed as `proto-plus` message classes.
+
+`proto-plus` provides a [few ways to create
+objects](https://proto-plus-python.readthedocs.io/en/latest/messages.html#usage).
+
+Strongly prefer instantiating library types through the constructor or by
+instantiating an empty object and initializing individual attributes. The
+dictionary construction method is discouraged as it is harder to use type
+checking and IDEs are not able to offer intellisense.
+
+```py
+# To try this sample yourself, install `google-cloud-tasks==2.5.1`
+from google.cloud import tasks_v2
+
+
+# 1. Generated types via constructor
+task_from_constructor = tasks_v2.Task(
+    http_request=tasks_v2.HttpRequest(
+        http_method=tasks_v2.HttpMethod.POST,
+        url="https://pubsub.googleapis.com/v1/projects/my-project/topics/testtopic:publish",
+        body=b"eyJtZXNzYWdlcyI6IFt7ImRhdGEiOiAiVkdocGN5QnBjeUJoSUhSbGMzUUsifV19Cg==",
+        oauth_token=tasks_v2.OAuthToken(
+            service_account_email='my-svc-acct@my-project.iam.gserviceaccount.com'
+        )
+    )
+)
+
+# 2. Instantiate object and then set attributes
+http_request = tasks_v2.HttpRequest()
+http_request.http_method = tasks_v2.HttpMethod.POST
+http_request.url = "https://pubsub.googleapis.com/v1/projects/my-project/topics/testtopic:publish"
+http_request.body = b"eyJtZXNzYWdlcyI6IFt7ImRhdGEiOiAiVkdocGN5QnBjeUJoSUhSbGMzUUsifV19Cg==",
+http_request.oauth_token.service_account_email = "my-svc-acct@my-project.iam.gserviceaccount.com"
+
+task = tasks_v2.Task()
+task.http_request = http_request
+
+# 2. Dictionary (NOT RECOMMENDED)
+task_from_dict = {
+    "http_request": {
+        "http_method": "POST",
+        "url": "https://pubsub.googleapis.com/v1/projects/my-project/topics/testtopic:publish",
+        "body": b"eyJtZXNzYWdlcyI6IFt7ImRhdGEiOiAiVkdocGN5QnBjeUJoSUhSbGMzUUsifV19Cg==",
+        "oauth_token": {"service_account_email":"my-svc-acct@my-project.iam.gserviceaccount.com"},
+    }
+}
+```
+
+### Functions and Classes
+
+Very few samples will require authoring classes. Prefer functions whenever
+possible. See [this video](https://www.youtube.com/watch?v=o9pEzgHorH0) for some
+insight into why classes aren't as necessary as you might think in Python.
+Classes also introduce cognitive load. If you do write a class in a sample, be
+prepared to justify its existence during code review.
+
+#### Descriptive function names
+
+Always prefer descriptive function names, even if they are long. For example
+`upload_file`, `upload_encrypted_file`, and `list_resource_records`. Similarly,
+prefer long and descriptive parameter names. For example `source_file_name`,
+`dns_zone_name`, and `base64_encryption_key`.
+
+Here's an example of a top-level function in a command-line application:
+
+```python
+def list_blobs(bucket_name):
+    """Lists all the blobs in the bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+
+    blobs = bucket.list_blobs()
+
+    for blob in blobs:
+        print(blob.name)
+```
+
+Notice the simple docstring and descriptive argument name (`bucket_name`
+implying a string instead of just `bucket` which could imply a class instance).
+
+This particular function is intended to be the "top of the stack" - the function
+executed when the command-line sample is run by the user. As such, notice that
+it prints the blobs instead of returning. In general, top of the stack functions
+in command-line applications should print, but use your best judgment.
+
+#### Documenting arguments
+
+Here's an example of a more complicated top-level function in a command-line
+application:
+
+```python
+def download_encrypted_blob(
+        bucket_name, source_blob_name, destination_file_name,
+        base64_encryption_key):
+    """Downloads a previously-encrypted blob from Google Cloud Storage.
+
+    The encryption key provided must be the same key provided when uploading
+    the blob.
+    """
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
+
+    # Encryption key must be an AES256 key represented as a bytestring with
+    # 32 bytes. Since it's passed in as a base64 encoded string, it needs
+    # to be decoded.
+    encryption_key = base64.b64decode(base64_encryption_key)
+
+    blob.download_to_filename(
+        destination_file_name, encryption_key=encryption_key)
+
+    print(f'Blob {source_blob_name} downloaded to {destination_file_name}.'
+```
+
+Note the verbose parameter names and the extended description that helps the
+user form context. If there were more parameters or if the parameters had
+complex context, then it might make sense to expand the docstring to include an
+`Args` section such as:
+
+```
+Args:
+    bucket_name: The name of the cloud storage bucket.
+    source_blob_name: The name of the blob in the bucket to download.
+    destination_file_name: The blob will be downloaded to this path.
+    base64_encryption_key: A base64-encoded RSA256 encryption key. Must be the
+        same key used to encrypt the file.
+```
+
+Generally, however, it's rarely necessary to exhaustively document the
+parameters this way. Lean towards unsurprising arguments with descriptive names,
+as having to resort to this kind of docstring might be extremely accurate but it
+comes at the cost of high redundancy, signal-to-noise ratio, and increased
+cognitive load.
+
+#### Documenting types
+
+Argument types should be documented using Python type annotations as introduced
+in [PEP 484](https://www.python.org/dev/peps/pep-0484/). For example:
+
+```py
+def hello_world(name: str) -> None:
+    print(f"Hello {name}!")
+```
+
+```py
+def adder(a: int, b: int) -> int:
+    return a+b
+```
+
+Type hinting is enforced using
+[`flake8-annotations`](https://pypi.org/project/flake8-annotations/), which is
+enabled by setting the `enforce_type_hints` variable to `True` in the
+appropriate `noxfile_config.py`. Type hinting is expected in all new samples,
+and will gradually be added to all compatible existing samples.
+
+If there is an `Args` section within the function's docstring, consider
+documenting the argument types there as well. For example:
+
+```
+Args:
+    credentials (google.oauth2.credentials.Credentials): Credentials
+      authorized for the current user.
+```
+
+When documenting primitive types, be sure to note if they have a particular set
+of constraints. For example, `A base64-encoded string` or `Must be between 0 and
+10`.
+
+### `datetime.datetime` Objects
+
+Always create timezone aware datetime objects. For libraries that use protobuf,
+omitting the timezone may lead to unexpected behavior when the datetime is
+converted to a protobuf timestamp.
+
+```py
+import datetime
+
+now = datetime.datetime.now(tz=datetime.timezone.utc)
+```
+
+For more information see the [Python datetime
+documentation](https://docs.python.org/3/library/datetime.html#datetime.datetime.utcfromtimestamp).
+
+### README File
+
+Each sample should have a `README.md` file that provides instructions for how to
+install, configure, and run the sample. Setup steps that cover creating Google
+Cloud projects and resources should link to appropriate pages in the [Google
+Cloud Documentation](https://cloud.google.com/docs/), to avoid duplication and
+simplify maintenance.
+
+### Dependencies
+
+Every sample should include a
+[requirements.txt](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+file that lists all of its dependencies, to enable others to re-create the
+environment that was used to create and test the sample. All dependencies should
+be pinned to a specific version, as in this example:
+
+```
+Flask==1.1.1
+PyMySQL==0.9.3
+SQLAlchemy==1.3.12
+```
+
+If a sample has testing requirements that differ from its runtime requirements
+(such as dependencies on [pytest](http://pytest.org/en/latest/) or other testing
+libraries), the testing requirements may be listed in a separate
+`requirements-test.txt` file instead of the main `requirements.txt` file.
+
+#### Developing samples for un-released changes
+
+Pip has [VCS
+support](https://pip.pypa.io/en/stable/cli/pip_install/#vcs-support). Use the
+branch name or commit hash instead of the package name.
+
+**pip install**:
+
+```
+pip install git+https://github.com/googleapis/python-firestore.git@ee518b741eb5d7167393c23baa1e29ace861b253
+```
+
+**requirements.txt**:
+
+```
+Flask==1.1.1
+PyMySQL==0.9.3
+git+https://github.com/googleapis/python-firestore.git@ee518b741eb5d7167393c23baa1e29ace861b253
+```
+
+### Region Tags
+
+Sample code may be integrated into Google Cloud Documentation through the use of
+region tags, which are comments added to the source code to identify code blocks
+that correspond to specific topics covered in the documentation. For example,
+see [this
+sample](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/cloud-sql/mysql/sqlalchemy/main.py)
+— the region tags are the comments that begin with `[START` or `[END`.
+
+The use of region tags is beyond the scope of this document, but if you’re using
+region tags they should start after the source code header (license/copyright
+information), but before imports and global configuration such as initializing
+constants.
+
+### Exception Handling
+
+Sample code should use standard Python exception handling techniques as covered
+in the [Google Python Style
+Guide](http://google.github.io/styleguide/pyguide.html#24-exceptions).
+
+## Testing Guidelines
+
+Samples should include tests to verify that the sample runs correctly and
+generates the intended output. Follow these guidelines while writing your tests:
+
+* Use [pytest](https://docs.pytest.org/en/latest/)-style tests and plain
+asserts. Don't use `unittest`-style tests or `assertX` methods.
+* Whenever possible, tests should allow for future changes or additions to APIs
+that are unrelated to the code being tested. For example, if a test is intended
+to verify a JSON payload returned from an endpoint, it should only check for the
+existence of the expected keys and values, and the test should continue to work
+correctly if the order of keys changes or new keys are added to the response in
+a future version of the API. In some cases, it may make sense for tests to
+simply verify that an API call was successful rather than checking the response
+payload.
+* Samples that use App Engine Standard should use the [App Engine
+testbed](https://cloud.google.com/appengine/docs/standard/python/refdocs/google.appengine.ext.testbed)
+for system testing, as shown in [this
+example](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/appengine/standard/localtesting/datastore_test.py).
+* All tests should be independent of one another and order-independent.
+* We use parallel processing for tests, so tests should be capable of running in
+  parallel with one another.
+* Use pytest's fixture for resource setup and teardown, instead of having them
+  in the test itself.
+* Avoid infinite loops.
+* Retry RPCs
+* You can enable running tests in parallel by adding `pytest-parallel` or
+  `pytest-xdist` to your `requirements-test.txt` file.
+
+### Arrange, Act, Assert
+
+Tests for samples should follow the “Arrange, Act, Assert” structure:
+
+* _Arrange_ — create and configure the components required for the test. Avoid
+nesting; prioritize readability and simplicity over efficiency. For Python
+tests, typical "arrange" steps include imports, copying environment variables to
+local variables, and so on.
+* _Act_ — execute the code to be tested, such as sending a request to an API and
+receiving a response.
+* _Assert_ — verify that the test results match what is expected, using an
+`assert` statement.
+
+### External Resources
+
+Whenever possible, tests should run against the live production version of cloud
+APIs and resources. This will assure that any breaking changes in those
+resources are identified by the tests.
+
+External resources that must exist prior to the test (for example, a Cloud SQL
+instance) should be identified and passed in through an environment variable. If
+specific data needs to exist within such infrastructure resources, however, the
+test should create this data as part of its _Arrange_ steps and then clean up
+when the test is completed.
+
+Creating mocks for external resources is strongly discouraged. Tests should
+verify the validity of the sample against the APIs, and not against a mock that
+embodies assumptions about the behavior of the APIs.
+
+### Temporary Resources
+
+When tests need temporary resources (such as a temp file or folder), they should
+create reasonable names for these resources with a UUID attached to assure
+uniqueness. Use the Python ```uuid``` package from the standard library to
+generate UUIDs for resource names. For example:
+
+```python
+glossary_id = f'test-glossary-{uuid.uuid4()}'
+```
+
+or:
+
+```python
+# If full uuid4 is too long, use its hex representation.
+encrypted_disk_name = f'test-disk-{uuid.uuid4().hex}'
+```
+
+```python
+# If the hex representation is also too long, slice it.
+encrypted_disk_name = f'test-disk-{uuid.uuid4().hex[:5]}'
+```
+
+All temporary resources should be explicitly deleted when testing is complete.
+Use pytest's fixture for cleaning up these resources instead of doing it in test
+itself.
+
+We recommend using `finally` to ensure that resource deletion occurs even if
+there is an error on creation. For example, this fixture creates a Dataproc
+cluster and tears it down regardless of errors during creation.
+
+```python
+@pytest.fixture(scope="function")
+def setup_and_teardown_cluster():
+    try:
+        # Create cluster using cluster client
+        cluster_client = dataproc.ClusterControllerClient(
+            client_options={
+                "api_endpoint": f"{CLUSTER_REGION}-dataproc.googleapis.com:443"
+            }
+        )
+
+        operation = cluster_client.create_cluster(
+            project_id=PROJECT_ID, region=CLUSTER_REGION, cluster=CLUSTER_CONFIG
+        )
+
+        # Wait for cluster to provision
+        operation.result()
+
+        yield
+    finally:
+        try:
+            # Delete cluster
+            operation = cluster_client.delete_cluster(
+                project_id=PROJECT_ID, region=CLUSTER_REGION, cluster_name=DATAPROC_CLUSTER
+            )
+            operation.result()
+        except NotFound:
+            print("Cluster already deleted")
+```
+
+### Console Output
+
+If the sample prints output to the console, the test should capture stdout to a
+file and verify that the captured output contains the key information that is
+expected. Strive to verify the content of the output rather than the syntax. For
+example, the test might verify that a string is included in the output, without
+taking a dependency on where that string occurs in the output.
+
+### Avoid infinite loops
+
+Never put potential infinite loops in the test code path. A typical example is
+about gRPC's LongRunningOperations. Make sure you pass the timeout parameter to
+the `result()` call.
+
+Good:
+
+```python
+# will raise google.api_core.GoogleAPICallError after 60 seconds
+operation.result(60)
+```
+
+Bad:
+
+```python
+operation.result()  # this could wait forever.
+```
+
+We recommend the timeout parameter to be around the number that gives you more
+than 90% success rate. Don't put too long a timeout.
+
+Now this test is inevitably flaky, so consider marking the test as `flaky` as
+follows:
+
+```python
+
+@pytest.mark.flaky(max_runs=3, min_passes=1)
+def my_flaky_test():
+    # test that involves LRO poling with the timeout
+```
+
+This combination will give you very high success rate with fixed test execution
+time (0.999 success rate and 180 seconds operation wait time in the worst case
+in this example).
+
+### Retry RPCs
+
+All the RPCs are inevitably flaky. It can fail for many reasons. The
+`google-cloud` Python client retries requests automatically for most cases.
+
+The previous style of client library (api-client) doesn't retry automatically,
+so consider using the Google API Core
+[`@retry.Retry()`](https://googleapis.dev/python/google-api-core/latest/retry.html)
+decorator. By default, it will retry [transient
+errors](https://googleapis.dev/python/google-api-core/latest/retry.html#google.api_core.retry.if_transient_error).
+Here is an
+[example](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/4718999884dedcbbf7f3b45c8a9867b644b965da/speech/snippets/quickstart_v2_test.py):
+
+```python
+from google.api_core.retry import Retry
+
+@Retry()
+def test_quickstart_v2() -> None:
+    project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
+
+    recognizer_id = "recognizer-" + str(uuid4())
+    response = quickstart_v2.quickstart_v2(
+        project_id, recognizer_id, os.path.join(RESOURCES, "audio.wav")
+    )
+
+    assert re.search(
+        r"how old is the Brooklyn Bridge",
+        response.results[0].alternatives[0].transcript,
+        re.DOTALL | re.I,
+    )
+
+    delete_recognizer(
+        f"projects/{project_id}/locations/global/recognizers/{recognizer_id}"
+    )
+```
+
+While `@Retry` is preferred, [`backoff`](https://pypi.org/project/backoff/) also
+supports retrying. Here is a simple example:
+
+```python
+
+import backoff
+from googleapiclient.errors import HttpError
+
+@pytest.fixture(scope='module')
+def test_resource():
+    @backoff.on_exception(backoff.expo, HttpError, max_time=60)
+    def create_resource():
+        try:
+            return client.projects().imaginaryResource().create(
+                name=resource_id, body=body).execute()
+        except HttpError as e:
+            if '409' in str(e):
+                # Ignore this case and get the existing one.
+                return client.projects().imaginaryResource().get(
+                    name=resource_id).execute()
+            else:
+                raise
+
+    resource = create_resource()
+
+    yield resource
+
+    # cleanup
+    ...
+```
+
+### Use filters with list methods
+
+When writing a test for a `list` method, consider filtering the possible
+results. Listing all resources in the test project may take a considerable
+amount of time. The exact way to do this depends on the API.
+
+Some `list` methods take a `filter`/`filter_` parameter:
+
+```python
+from datetime import datetime
+
+from google.cloud import logging_v2
+
+client = logging_v2.LoggingServiceV2Client()
+resource_names = [f"projects/{project}"]
+   # We add timestamp for making the query faster.
+    now = datetime.datetime.now(datetime.timezone.utc)
+    filter_date = now - datetime.timedelta(minutes=1)
+    filters = (
+        f"timestamp>=\"{filter_date.isoformat('T')}\" "
+        "resource.type=cloud_run_revision "
+        "AND severity=NOTICE "
+)
+
+entries = client.list_log_entries(resource_names, filter_=filters)
+
+```
+
+Others allow you to limit the result set with additional arguments to the
+request:
+
+```python
+from google.cloud import asset_v1p5beta1
+
+# TODO project_id = 'Your Google Cloud Project ID'
+# TODO asset_types = 'Your asset type list, e.g.,
+# ["storage.googleapis.com/Bucket","bigquery.googleapis.com/Table"]'
+# TODO page_size = 'Num of assets in one page, which must be between 1 and
+# 1000 (both inclusively)'
+
+project_resource = "projects/{}".format(project_id)
+content_type = asset_v1p5beta1.ContentType.RESOURCE
+client = asset_v1p5beta1.AssetServiceClient()
+
+# Call ListAssets v1p5beta1 to list assets.
+response = client.list_assets(
+    request={
+        "parent": project_resource,
+        "read_time": None,
+        "asset_types": asset_types,
+        "content_type": content_type,
+        "page_size": page_size,
+    }
+)
+```
+
+### Test Environment Setup
+
+Because all tests are system tests that use live resources, running tests
+requires a Google Cloud project with billing enabled, as covered under [Creating
+and Managing
+Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+
+Once you have your project created and configured, you'll need to set
+environment variables to identify the project and resources to be used by tests.
+See
+[testing/test-env.tmpl.sh](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/testing/test-env.tmpl.sh)
+for a list of all environment variables that must be set manually. Not every
+test needs all of these variables. All required environment variables are listed
+in `testing/test-env.tmpl.sh`. If you need to add a new secret, follow
+instructions in [Secrets](#secrets).
+
+We suggest that you copy this file as follows:
+
+```sh
+cp testing/test-env.tmpl.sh testing/test-env.sh
+editor testing/test-env.sh  # change the value of `GOOGLE_CLOUD_PROJECT`.
+```
+
+You can easily `source` this file for exporting the environment variables.
+
+#### Development environment setup
+
+This repository supports two ways to run tests locally.
+
+1. nox
+
+    This is the recommended way. Setup takes little more efforts than the second
+    one, but the test execution will be faster.
+
+2. Docker
+
+    This is another way of running the tests. Setup is easier because you only
+    need to instal Docker. The test execution will be bit slower than the first
+    one. This option is also useful if you need to simulate the CI system.
+
+### Running tests with nox
+
+Automated testing for samples is managed by [nox](https://nox.readthedocs.io).
+Nox allows us to run a variety of tests, including the flake8 linter, Python
+2.7, Python 3.x, and App Engine tests, as well as automated README generation.
+
+Sample tests are run through [pytest](https://pytest.org). Do not use
+[unittest](https://docs.python.org/3/library/unittest.html).
+
+**Note:**
+
+**Library repositories:** If you are working on an existing project (meaning
+that a `samples` directory already exists), a `noxfile.py` will already exist
+within that `samples` directory.
+
+For new samples, create a new `noxfile.py` and paste the contents of
+[noxfile-template.py](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/noxfile-template.py).
+Note - there may be a `noxfile.py` in the repo already in the root directory,
+but this is used for testing the libraries, not the samples, so you will still
+need to make a samples noxfile.
+
+**python-docs-samples:** As a temporary workaround, each project currently uses
+first `noxfile-template.py` found in a parent folder above the current sample.
+In order to simulate this locally, you need to copy + rename the parent
+`noxfile-template.py` as `noxfile.py` in the folder of the project (containing
+the `requirements.txt` for the file).
+
+```console
+cd python-docs-samples
+cp noxfile-template.py PATH/TO/YOUR/PROJECT/noxfile.py
+cd PATH/TO/YOUR/PROJECT/
+```
+
+ℹ️ **Note:** Nox only detects tests in the `tests` directory where the
+`noxfile_config.py` file is or [for any files named `*_test.py` or
+`test_*.py`](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/6c4c8de274496300e3285168a012f8b6203b5122/noxfile-template.py#L182-L187)
+in the same directory as the config file.
+
+To use nox, install it globally with `pip`:
+
+```console
+pip install nox
+```
+
+To run style checks on your samples:
+
+```console
+nox -s lint
+```
+
+To run tests with a python version, use the correct `py-3.*` sessions:
+
+```console
+nox -s py-3.6
+```
+
+To run a specific file:
+
+```console
+nox -s py-3.7 -- snippets_test.py
+```
+
+To run a specific test from a specific following:
+
+```console
+nox -s py-3.7 -- snippets_test.py::test_list_blobs
+```
+
+#### `noxfile_config.py`
+
+The [`noxfile_config.py`](noxfile_config.py) allows for customization of some
+options:
+
+* Ignore specific Python versions.
+* Enforce type hints.
+* Specify a different Google Cloud Project.
+* Add additional environment variables. Also see [Environment
+  Variables](#environment-variables).
+* Override the version of `pip` used by nox
+
+Options are documented inside the [noxfile_config.py](noxfile_config.py).
+
+### Running tests with Docker
+
+**Note**: This is currently only available for samples in `python-docs-samples`.
+
+If you have [Docker](https://www.docker.com) installed and runnable by the local
+user, you can use `scripts/run_tests_local.sh` helper script to run the tests.
+For example, let's say you want to modify the code in `cdn` directory, then you
+can do:
+
+```sh
+$ cd cdn
+$ ../scripts/run_tests_local.sh .
+# This will run the default sessions; lint, py-3.6, and py-3.7
+$ ../scripts/run_tests_local.sh . lint
+# Running only lint
+```
+
+If your test needs a service account, you have to create a service account and
+download the JSON key to `testing/service-account.json`.
+
+On MacOS systems, you also need to install `coreutils` to use
+`scripts/run_tests_local.sh`. Here is how to install it with `brew`:
+
+```sh
+brew install coreutils
+```
+
+### Environment Variables and Secrets
+
+This section explains how to set environment variables that are needed by tests.
+
+#### Environment Variables
+
+If a `noxfile_config.py` does not exist, copy
+[`noxfile_config.py`](noxfile_config.py) into the directory.
+
+Add the new environment variables to the `envs` dictionary.
+
+```py
+TEST_CONFIG_OVERRIDE = {
+    # You can opt out from the test for specific Python versions.
+    "ignored_versions": ["2.7", "3.8", "3.10", "3.11", "3.12"],
+    # Old samples are opted out of enforcing Python type hints
+    # All new samples should feature them
+    "enforce_type_hints": True,
+    # An envvar key for determining the project id to use. Change it
+    # to 'BUILD_SPECIFIC_GCLOUD_PROJECT' if you want to opt in using a
+    # build specific Cloud project. You can also use your own string
+    # to use your own Cloud project.
+    "gcloud_project_env": "GOOGLE_CLOUD_PROJECT",
+    # 'gcloud_project_env': 'BUILD_SPECIFIC_GCLOUD_PROJECT',
+    # A dictionary you want to inject into your test. Don't put any
+    # secrets here. These values will override predefined values.
+    "envs": {"DJANGO_SETTINGS_MODULE": "mysite.settings"},
+}
+```
+
+#### Secrets
+
+For setting up a local test environment, see [Test Environment
+Setup](#test-environment-setup).
+
+Secrets (e.g., project names, API keys, passwords) are kept in Cloud Secret
+Manager. See
+[python-docs-samples-test-env](https://console.cloud.google.com/security/secret-manager/secret/python-docs-samples-test-env/versions?project=cloud-devrel-kokoro-resources).
+If you are unable to access the link, reach out to your assigned pull request
+reviewer or someone in
+[@GoogleCloudPlatform/python-samples-reviewers](https://github.com/orgs/GoogleCloudPlatform/teams/python-samples-reviewers)
+for assistance.
+
+1. Add the new environment variable to
+   [`testing/test-env.tmpl.sh`](testing/test-env.tmpl.sh) in your pull request.
+2. Run [`scripts/decrypt-secrets.sh`](scripts/decrypt-secrets.sh) to fetch the
+   secrets. A new file `testing/test-env.sh` will appear.
+3. Add the new environment variable to `testing/test-env.sh`.
+4. Run [`scripts/encrypt-secrets.sh`](scripts/encrypt-secrets.sh) to upload the
+   secrets to secret manager.
+
+### Google Cloud Storage Resources
+
+Certain samples require integration with Google Cloud Storage (GCS), most
+commonly for APIs that read files from GCS. To run the tests for these samples,
+configure your GCS bucket name via the `CLOUD_STORAGE_BUCKET` environment
+variable.
+
+The resources required by tests can usually be found in the `./resources` folder
+inside the `samples/snippets` directory in client libraries, as in [this
+example](https://github.com/googleapis/python-automl/tree/main/samples/snippets/resources).
+You can upload those resources to your own GCS bucket to run the tests with
+[gsutil](https://cloud.google.com/storage/docs/gsutil). For example:
+
+```console
+gsutil cp ./samples/snippets/resources/* gs://{$CLOUD_STORAGE_BUCKET}/
+```
+
+## Debugging
+
+### Can I use a debugger for samples?
+
+Yes, you can use `pdb` or any Python debugger. For pdb, use `import pdb;
+pdb.set_trace()` (<3.7) or `breakpoint` (3.7+). See
+<https://docs.python.org/3/library/pdb.html>.
+
+### How do I do that in IntelliJ, VSCode, etc.?
+
+These IDEs just inject the breakpoint above into the code, so it should work.
+
+## MAC_SETUP.md
+# Setting up a Mac development environment with pyenv and pyenv-virtualenv
+
+In this guide, you'll set up a local Python development environment with
+multiple Python versions, managed by [pyenv](https://github.com/pyenv/pyenv).
+
+This guide differs from the [Google Cloud Python development
+instructions](https://cloud.google.com/python/setup) because developers of
+samples and libraries need to be able to use multiple versions of Python to
+test their code.
+
+## Before you begin
+
+1. Install [homebrew](https://brew.sh/) if you do not already have it.
+
+   **Note:** If you are running Catalina (MacOS 10.15.x), ensure that you have
+   a compatible version of Homebrew (2.1.13 or later). Running `brew update` on
+   Catalina does not always result in a compatible version, so uninstall and
+   reinstall homebrew, if necessary
+
+## Installing pyenv and pyenv-virtualenv
+
+1.  Install [pyenv](https://github.com/pyenv/pyenv).
+
+    ```console
+    brew update
+    brew install pyenv
+    ```
+
+1.  Install the [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
+    plugin.
+
+    ```console
+    brew install pyenv-virtualenv
+    ```
+
+1.  Append the following to your `~/.bashrc`:
+
+    ```
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    ```
+
+    **Note:** This also works with ZSH.
+
+1.  Reload your shell.
+
+    ```console
+    source ~/.bashrc
+    ```
+
+## Installing multiple Python versions
+
+
+1.  See the available Python versions with [pyenv](https://github.com/pyenv/pyenv).
+
+    ```console
+    pyenv install --list
+    ```
+
+    **Note:** The Python versions are at the top of the long list. If the Python
+    version you want isn't listed, you may need to upgrade your pyenv with
+    homebrew.
+
+    ```console
+    brew update
+    brew upgrade pyenv
+    ```
+    
+1.  Install the necessary Python versions with pyenv. Use the latest release
+    of the versions you wish to test against.  A list of available versions
+    is available on [python.org](https://www.python.org/doc/versions/)
+
+    As of April 28, 2022, the latest Python versions are:
+
+    *  3.6.13 (latest 3.6.x release)
+    ```console
+    $ pyenv install 3.6.13
+    ```
+    *  3.7.16 (latest 3.7.x release)
+    ```console
+    $ pyenv install 3.7.16
+    ```
+    *  3.8.16 (latest 3.8.x release)
+    ```console
+    $ pyenv install 3.8.16
+    ```
+    *  3.9.16 (latest 3.9.x release)
+    ```console
+    $ pyenv install 3.9.16
+    ```
+    *  3.10.9 (latest 3.10.x release)
+    ```console
+    $ pyenv install 3.10.9
+    ```
+    *  3.11.1 (latest 3.11.x release)
+    ```console
+    $ pyenv install 3.11.1
+    ```
+    
+    > ℹ️ *Note*: If you are using an M1 Mac,
+    > certain versions of Python will not properly install with pyenv
+    > due to [incompatibilities with `clang`](https://bugs.python.org/issue45405).
+    > Python 3.6.13, 3.7.13, and 3.8.13 will work, but earlier patches Python 3.6, Python 3.7, and Python 3.8 may not. 
+
+
+    > ℹ️ *Note*: If you are getting errors installing a python version,
+    > try setting up the `SDKROOT` environment variable.
+    >
+    > ```console
+    > # You can add this to your .bashrc file.
+    > export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+    > ```
+
+1.  After you have installed a python version through pyenv,
+    verify that you are now using the pyenv Python shim.
+
+    ```console
+    $ which python
+    ~/.pyenv/shims/python
+    ```
+
+## Managing python versions using Pyenv global
+Pyenv allows you to configure the priority order for your python installs.
+
+```
+pyenv global 3.8.5 3.7.8 3.6.11 3.5.9 2.7.18
+```
+
+This will make python and python3 point to Python 3.8.5. python2 will use
+2.7.18. You can also further specify versions, such as python3.6 to use that
+version.
+
+## Python virtual environments
+Using [Virtual Environments](https://docs.python.org/3/library/venv.html)
+prevents inadvertent modifications to your global python install. Once
+created and sourced, calls to `python` will use this virtual environment, not
+a global python install. Each virtual environment can have its own set of
+packages that can be different from others.
+
+
+### Using Python 3+ venv
+Python has builtin support for creating virtual environments, accessible by
+running the `venv` module.
+
+```
+cd python-docs-samples
+python -m venv [venv-name]
+source [venv-name]/bin/activate
+```
+
+Typically you will name the venv `venv`, or `venv38` for a python 3.8 venv.
+
+
+### Using pyenv-virtualenv
+You can also use an extension for pyenv that will assist in managing virtual
+environments. This allows you to use `pyenv local` to automatically use the
+created virtual environment. You can install this by running
+`$ brew install pyenv-virtualenv`
+
+1.  Change to the desired source directory.	
+
+    ```console	
+    cd ~/src/python-docs-samples	
+    ```	
+
+1.  Create a virtualenv for python 3.8.5 using `pyenv virtualenv`.	
+
+    ```console	
+    pyenv virtualenv 3.8.5 python-docs-samples	
+    ```	
+
+    This creates a virtualenv folder within `~/.pyenv/versions/`.	
+
+1.  Set the local Python version(s) with `pyenv local`	
+
+    ```console	
+    # pyenv local [name of virtualenv] [list of python versions to use]	
+    pyenv local python-docs-samples 3.8.5 3.7.8 3.6.11 3.5.9 2.7.18	
+    ```	
+
+1.  Now, when you `cd` into the source directory or a subdirectory within it,	
+    pyenv will make your virtualenv the default Python. Since you specified	
+    more than one version, it will also add binaries like `python36` and	
+    `python27` to your PATH, which
+    [nox](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/AUTHORING_GUIDE.md#running-tests-with-nox)
+    uses when picking Python interpreters.	
+
+1.  Add `.python-version` to your
+    [global gitignore file](https://help.github.com/articles/ignoring-files/#create-a-global-gitignore),	
+    so it won't be committed into the repository.
+
+## More on authoring samples
+If you are looking for more information on how to author samples, please view
+the [Authoring Guide](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/AUTHORING_GUIDE.md)
+
+## noxfile-template.py
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from __future__ import annotations
+from __future__ import print_function
+
+from collections.abc import Callable
+import glob
+import os
+from pathlib import Path
+import sys
+
+import nox
+
+
+# WARNING - WARNING - WARNING - WARNING - WARNING
+# WARNING - WARNING - WARNING - WARNING - WARNING
+#       BE CAREFUL WHEN EDITING THIS FILE!
+# WARNING - WARNING - WARNING - WARNING - WARNING
+# WARNING - WARNING - WARNING - WARNING - WARNING
+
+# Copy `noxfile_config.py` to your directory and modify it instead.
+
+
+# `TEST_CONFIG` dict is a configuration hook that allows users to
+# modify the test configurations. The values here should be in sync
+# with `noxfile_config.py`. Users will copy `noxfile_config.py` into
+# their directory and modify it.
+
+TEST_CONFIG = {
+    # You can opt out from the test for specific Python versions.
+    "ignored_versions": ["2.7", "3.7", "3.8", "3.10", "3.11", "3.12"],
+    # Old samples are opted out of enforcing Python type hints
+    # All new samples should feature them
+    "enforce_type_hints": False,
+    # An envvar key for determining the project id to use. Change it
+    # to 'BUILD_SPECIFIC_GCLOUD_PROJECT' if you want to opt in using a
+    # build specific Cloud project. You can also use your own string
+    # to use your own Cloud project.
+    "gcloud_project_env": "GOOGLE_CLOUD_PROJECT",
+    # 'gcloud_project_env': 'BUILD_SPECIFIC_GCLOUD_PROJECT',
+    # If you need to use a specific version of pip,
+    # change pip_version_override to the string representation
+    # of the version number, for example, "20.2.4"
+    "pip_version_override": None,
+    # A dictionary you want to inject into your test. Don't put any
+    # secrets here. These values will override predefined values.
+    "envs": {},
+}
+
+
+try:
+    # Ensure we can import noxfile_config in the project's directory.
+    sys.path.append(".")
+    from noxfile_config import TEST_CONFIG_OVERRIDE
+except ImportError as e:
+    print("No user noxfile_config found: detail: {}".format(e))
+    TEST_CONFIG_OVERRIDE = {}
+
+# Update the TEST_CONFIG with the user supplied values.
+TEST_CONFIG.update(TEST_CONFIG_OVERRIDE)
+
+
+def get_pytest_env_vars() -> dict[str, str]:
+    """Returns a dict for pytest invocation."""
+    ret = {}
+
+    # Override the GCLOUD_PROJECT and the alias.
+    env_key = TEST_CONFIG["gcloud_project_env"]
+    # This should error out if not set.
+    ret["GOOGLE_CLOUD_PROJECT"] = os.environ[env_key]
+    ret["GCLOUD_PROJECT"] = os.environ[env_key]  # deprecated
+
+    # Apply user supplied envs.
+    ret.update(TEST_CONFIG["envs"])
+    return ret
+
+
+# All versions used to tested samples.
+ALL_VERSIONS = ["2.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+
+# Any default versions that should be ignored.
+IGNORED_VERSIONS = TEST_CONFIG["ignored_versions"]
+
+TESTED_VERSIONS = sorted([v for v in ALL_VERSIONS if v not in IGNORED_VERSIONS])
+
+INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", False))
+
+# Use the oldest tested Python version for linting (defaults to 3.10)
+LINTING_VERSION = "3.10"
+if len(TESTED_VERSIONS) > 0:
+    LINTING_VERSION = TESTED_VERSIONS[0]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
+#
+# Style Checks
+#
+
+
+def _determine_local_import_names(start_dir: str) -> list[str]:
+    """Determines all import names that should be considered "local".
+
+    This is used when running the linter to ensure that import order is
+    properly checked.
+    """
+    file_ext_pairs = [os.path.splitext(path) for path in os.listdir(start_dir)]
+    return [
+        basename
+        for basename, extension in file_ext_pairs
+        if extension == ".py"
+        or os.path.isdir(os.path.join(start_dir, basename))
+        and basename not in ("__pycache__")
+    ]
+
+
+# Linting with flake8.
+#
+# We ignore the following rules:
+#   ANN101: missing type annotation for `self` in method
+#   ANN102: missing type annotation for `cls` in method
+#   E203: whitespace before ‘:’
+#   E266: too many leading ‘#’ for block comment
+#   E501: line too long
+#   I202: Additional newline in a section of imports
+#
+# We also need to specify the rules which are ignored by default:
+# ['E226', 'W504', 'E126', 'E123', 'W503', 'E24', 'E704', 'E121']
+#
+# For more information see: https://pypi.org/project/flake8-annotations
+FLAKE8_COMMON_ARGS = [
+    "--show-source",
+    "--builtin=gettext",
+    "--max-complexity=20",
+    "--import-order-style=google",
+    "--exclude=.nox,.cache,env,lib,generated_pb2,*_pb2.py,*_pb2_grpc.py",
+    "--ignore=ANN101,ANN102,E121,E123,E126,E203,E226,E24,E266,E501,E704,W503,W504,I202",
+    "--max-line-length=88",
+]
+
+
+@nox.session(python=LINTING_VERSION)
+def lint(session: nox.sessions.Session) -> None:
+    if not TEST_CONFIG["enforce_type_hints"]:
+        session.install("flake8", "flake8-import-order")
+    else:
+        session.install("flake8", "flake8-import-order", "flake8-annotations")
+
+    local_names = _determine_local_import_names(".")
+    args = FLAKE8_COMMON_ARGS + [
+        "--application-import-names",
+        ",".join(local_names),
+        ".",
+    ]
+    session.run("flake8", *args)
+
+
+#
+# Black
+#
+
+
+@nox.session(python=LINTING_VERSION)
+def blacken(session: nox.sessions.Session) -> None:
+    session.install("black")
+    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
+
+    session.run("black", *python_files)
+
+
+#
+# Sample Tests
+#
+
+
+PYTEST_COMMON_ARGS = ["--junitxml=sponge_log.xml"]
+
+
+def _session_tests(
+    session: nox.sessions.Session, post_install: Callable = None
+) -> None:
+    # check for presence of tests
+    test_list = glob.glob("*_test.py") + glob.glob("test_*.py")
+    test_list.extend(glob.glob("tests"))
+
+    if len(test_list) == 0:
+        print("No tests found, skipping directory.")
+        return
+
+    if TEST_CONFIG["pip_version_override"]:
+        pip_version = TEST_CONFIG["pip_version_override"]
+        session.install(f"pip=={pip_version}")
+    else:
+        session.install("--upgrade", "pip")
+
+    """Runs py.test for a particular project."""
+    concurrent_args = []
+    if os.path.exists("requirements.txt"):
+        with open("requirements.txt") as rfile:
+            packages = rfile.read()
+        if os.path.exists("constraints.txt"):
+            session.install(
+                "-r",
+                "requirements.txt",
+                "-c",
+                "constraints.txt",
+                "--only-binary",
+                ":all",
+            )
+        elif "pyspark" in packages:
+            session.install("-r", "requirements.txt", "--use-pep517")
+        else:
+            session.install("-r", "requirements.txt", "--only-binary", ":all")
+
+    if os.path.exists("requirements-test.txt"):
+        with open("requirements-test.txt") as rtfile:
+            packages += rtfile.read()
+        if os.path.exists("constraints-test.txt"):
+            session.install(
+                "-r",
+                "requirements-test.txt",
+                "-c",
+                "constraints-test.txt",
+                "--only-binary",
+                ":all",
+            )
+        else:
+            session.install("-r", "requirements-test.txt", "--only-binary", ":all")
+
+    if INSTALL_LIBRARY_FROM_SOURCE:
+        session.install("-e", _get_repo_root())
+
+    if post_install:
+        post_install(session)
+
+    if "pytest-parallel" in packages:
+        concurrent_args.extend(["--workers", "auto", "--tests-per-worker", "auto"])
+    elif "pytest-xdist" in packages:
+        concurrent_args.extend(["-n", "auto"])
+
+    session.run(
+        "pytest",
+        *(PYTEST_COMMON_ARGS + session.posargs + concurrent_args),
+        # Pytest will return 5 when no tests are collected. This can happen
+        # on travis where slow and flaky tests are excluded.
+        # See http://doc.pytest.org/en/latest/_modules/_pytest/main.html
+        success_codes=[0, 5],
+        env=get_pytest_env_vars(),
+    )
+
+
+@nox.session(python=ALL_VERSIONS)
+def py(session: nox.sessions.Session) -> None:
+    """Runs py.test for a sample using the specified version of Python."""
+    if session.python in TESTED_VERSIONS:
+        _session_tests(session)
+    else:
+        session.skip(
+            "SKIPPED: {} tests are disabled for this sample.".format(session.python)
+        )
+
+
+#
+# Readmegen
+#
+
+
+def _get_repo_root() -> str | None:
+    """Returns the root folder of the project."""
+    # Get root of this repository.
+    # Assume we don't have directories nested deeper than 10 items.
+    p = Path(os.getcwd())
+    for i in range(10):
+        if p is None:
+            break
+        if Path(p / ".git").exists():
+            return str(p)
+        p = p.parent
+    raise Exception("Unable to detect repository root.")
+
+
+GENERATED_READMES = sorted([x for x in Path(".").rglob("*.rst.in")])
+
+
+@nox.session
+@nox.parametrize("path", GENERATED_READMES)
+def readmegen(session: nox.sessions.Session, path: str) -> None:
+    """(Re-)generates the readme for a sample."""
+    session.install("jinja2", "pyyaml")
+    dir_ = os.path.dirname(path)
+
+    if os.path.exists(os.path.join(dir_, "requirements.txt")):
+        session.install("-r", os.path.join(dir_, "requirements.txt"))
+
+    in_file = os.path.join(dir_, "README.rst.in")
+    session.run(
+        "python", _get_repo_root() + "/scripts/readme-gen/readme_gen.py", in_file
+    )
+
+## noxfile_config.py
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Default TEST_CONFIG_OVERRIDE for python repos.
+
+# You can copy this file into your directory, then it will be imported from
+# the noxfile.py.
+
+# The source of truth:
+# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/noxfile_config.py
+
+TEST_CONFIG_OVERRIDE = {
+    # You can opt out from the test for specific Python versions.
+    "ignored_versions": ["2.7", "3.7", "3.8", "3.10", "3.11", "3.12"],
+    # Old samples are opted out of enforcing Python type hints
+    # All new samples should feature them
+    "enforce_type_hints": True,
+    # An envvar key for determining the project id to use. Change it
+    # to 'BUILD_SPECIFIC_GCLOUD_PROJECT' if you want to opt in using a
+    # build specific Cloud project. You can also use your own string
+    # to use your own Cloud project.
+    "gcloud_project_env": "GOOGLE_CLOUD_PROJECT",
+    # 'gcloud_project_env': 'BUILD_SPECIFIC_GCLOUD_PROJECT',
+    # If you need to use a specific version of pip,
+    # change pip_version_override to the string representation
+    # of the version number, for example, "20.2.4"
+    "pip_version_override": None,
+    # A dictionary you want to inject into your test. Don't put any
+    # secrets here. These values will override predefined values.
+    "envs": {},
+}
+
+## owlbot.py
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from logging import Logger
+from pathlib import Path
+import re
+import subprocess
+
+import synthtool as s
+import synthtool.gcp as gcp
+from synthtool.log import logger
+
+logger: Logger = logger
+
+_EXCLUDED_DIRS = [r"^\."]
+
+
+def walk_through_owlbot_dirs(dir: Path, search_for_changed_files: bool) -> list[str]:
+    """
+    Walks through all sample directories
+    Returns:
+    A list of directories
+    """
+    owlbot_dirs: list[str] = []
+    packages_to_exclude = _EXCLUDED_DIRS
+    if search_for_changed_files:
+        try:
+            # Need to run this step first in the post processor since we only clone
+            # the branch the PR is on in the Docker container
+            output = subprocess.run(
+                ["git", "fetch", "origin", "main:main", "--deepen=200"], check=False
+            )
+            output.check_returncode()
+        except subprocess.CalledProcessError as error:
+            if error.returncode == 128:
+                logger.info(f"Error: ${error.output}; skipping fetching main")
+            else:
+                raise error
+    for path_object in dir.glob("**/requirements.txt"):
+        object_dir = str(Path(path_object).parents[0])
+        if (
+            path_object.is_file()
+            and object_dir != str(dir)
+            and not re.search(
+                "(?:% s)" % "|".join(packages_to_exclude), str(Path(path_object))
+            )
+        ):
+            if search_for_changed_files:
+                if (
+                    subprocess.run(
+                        ["git", "diff", "--quiet", "main...", object_dir], check=False
+                    ).returncode
+                    == 1
+                ):
+                    owlbot_dirs.append(object_dir)
+            else:
+                owlbot_dirs.append(object_dir)
+    for path_object in dir.glob("owl-bot-staging/*"):
+        owlbot_dirs.append(
+            f"{Path(path_object).parents[1]}/packages/{Path(path_object).name}"
+        )
+    return owlbot_dirs
+
+
+templated_files = gcp.CommonTemplates().py_library()
+
+# Copy the standard noxfile from templated_files
+s.move(templated_files / "noxfile.py")
+
+dirs: list[str] = walk_through_owlbot_dirs(Path.cwd(), search_for_changed_files=True)
+if dirs:
+    lint_paths = ", ".join(f'"{d}"' for d in dirs)
+    # Update LINT_PATHS in order to run black on changed files
+    s.replace(
+        "noxfile.py",
+        r"""LINT_PATHS = \["docs", "google", "tests", "noxfile.py", "setup.py"\]""",
+        f"""LINT_PATHS = [{lint_paths}]""",
+    )
+
+    # TODO: Remove once https://github.com/googleapis/synthtool/pull/1811 is merged.
+    s.replace(
+        "noxfile.py",
+        r"""BLACK_VERSION = "black==22.3.0"\nISORT_VERSION = "isort==5.10.1""",
+        r"""BLACK_VERSION = "black[jupyter]==23.3.0"\nISORT_VERSION = "isort==5.11.0""",
+    )
+
+    # ----------------------------------------------------------------------------
+    # Run blacken session
+    # ----------------------------------------------------------------------------
+
+    s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+## renovate.json
+{
+  "extends": [
+    "config:recommended"
+  ],
+  "prConcurrentLimit": 0,
+  "rebaseWhen": "never",
+  "dependencyDashboard": true,
+  "poetry": {
+    "fileMatch": [
+      "pyproject.toml"
+    ]
+  },
+  "pip_requirements": {
+    "fileMatch": [
+      "requirements-test.txt",
+      "requirements-composer.txt",
+      "constraints.txt",
+      "constraints-test.txt"
+    ]
+  },
+  "ignorePaths": [
+    "composer/**/constraints.txt",
+    "composer/blog/**/constraints.txt",
+    "composer/airflow_1_samples/requirements.txt",
+    "appengine/standard",
+    "dataflow/flex-templates/pipeline_with_dependencies/**",
+    "dataflow/gemma/**"
+  ],
+  "packageRules": [
+    {
+      "separateMinorPatch": true,
+      "matchPackageNames": [
+        "/pytest/"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "enabled": false,
+      "matchPackageNames": [
+        "/pytest/"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "extends": [
+        "schedule:monthly"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "extends": [
+        "schedule:quarterly"
+      ]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "schedule": [
+      "at any time"
+    ]
+  }
+}
